@@ -1,0 +1,75 @@
+==================================================================================
+  MBG SMART LOGISTICS — A2C BENCHMARK REPORT (Paper-Ready)
+==================================================================================
+  Generated    : 2026-06-12 22:56:33
+  Device       : cuda
+  Dataset      : C:\delivery-agent-web-developer\ai-service\mbg_routing_benchmark_dataset.json
+  Total scen.  : 1500
+  Runs/level   : 5
+  Difficulties : easy, normal, hard
+  Weights      : a2c_best.pth
+  Best Val Rew : -192.65
+  Model Ver    : v4_ppo_skip
+==================================================================================
+
+  DIFFICULTY: EASY (3–6 schools, 5 runs)
+  ==============================================================================
+  Metric                        |   A2C (Ours)  |   Heuristic   |  NearNeighbor |  Δ A2C/HW 
+  ------------------------------+--------------+--------------+--------------+-----------
+  Avg Distance (km)             |     12.51     |     12.21     |     10.09     | -  +2.5%
+  Avg Time (min)                |      25.0     |      24.4     |      20.2     | -  +2.5%
+  Avg Schools Visited           |      4.6      |      4.6      |      4.6      | -  +0.0%
+  Capacity Util (%)             |      19.7     |      19.7     |      19.7     | -  +0.0%
+  All Schools Visited (%)       |     100.0     |     100.0     |     100.0     | -  +0.0%
+  Spoilage Prevention (%)       |     100.0     |     100.0     |     100.0     | -  +0.0%
+  Urgency Completion (%)        |     100.0     |     100.0     |     100.0     | -  +0.0%
+  Inference (ms)                |     89.78     |      0.00     |      0.00     |    N/A    
+  ------------------------------+--------------+--------------+--------------+-----------
+  Win Rate vs Heuristic         |     20.0     %|
+
+
+  DIFFICULTY: NORMAL (8–11 schools, 5 runs)
+  ==============================================================================
+  Metric                        |   A2C (Ours)  |   Heuristic   |  NearNeighbor |  Δ A2C/HW 
+  ------------------------------+--------------+--------------+--------------+-----------
+  Avg Distance (km)             |     51.18     |     38.68     |     25.21     | - +32.3%
+  Avg Time (min)                |     102.4     |      77.4     |      50.4     | - +32.3%
+  Avg Schools Visited           |      9.8      |      9.8      |      9.8      | -  +0.0%
+  Capacity Util (%)             |      64.5     |      64.5     |      64.5     | -  +0.0%
+  All Schools Visited (%)       |     100.0     |     100.0     |     100.0     | -  +0.0%
+  Spoilage Prevention (%)       |      26.5     |      52.0     |      72.1     | - -49.0%
+  Urgency Completion (%)        |      15.0     |      76.7     |      61.7     | - -80.4%
+  Inference (ms)                |      7.35     |      0.20     |      0.20     | -+3575.0%
+  ------------------------------+--------------+--------------+--------------+-----------
+  Win Rate vs Heuristic         |      0.0     %|
+
+
+  DIFFICULTY: HARD (12–15 schools, 5 runs)
+  ==============================================================================
+  Metric                        |   A2C (Ours)  |   Heuristic   |  NearNeighbor |  Δ A2C/HW 
+  ------------------------------+--------------+--------------+--------------+-----------
+  Avg Distance (km)             |     51.95     |     44.03     |     23.78     | - +18.0%
+  Avg Time (min)                |     103.9     |      88.1     |      47.6     | - +17.9%
+  Avg Schools Visited           |      9.2      |      9.2      |      9.0      | -  +0.0%
+  Capacity Util (%)             |      96.4     |      98.3     |      96.7     | -  -1.9%
+  All Schools Visited (%)       |      0.0      |      0.0      |      0.0      |    N/A    
+  Spoilage Prevention (%)       |      20.3     |      13.6     |      60.0     | + +49.3%
+  Urgency Completion (%)        |      10.4     |      15.4     |      28.1     | - -32.5%
+  Inference (ms)                |      8.10     |      0.11     |      0.00     | -+7263.6%
+  ------------------------------+--------------+--------------+--------------+-----------
+  Win Rate vs Heuristic         |     40.0     %|
+
+==================================================================================
+  OVERALL SUMMARY
+==================================================================================
+  Overall A2C Win Rate     : 20.0% (3/15 runs)
+  Avg Distance Saving      : -21.8% vs heuristic
+  Spoilage Prevention      : A2C=48.9%  HW=55.2%  Δ=-6.3pp
+  Urgency Completion Rate  : A2C=41.8%  HW=64.0%  Δ=-22.2pp
+
+  LEGEND:
+  + = A2C performs better  |  - = Heuristic performs better
+  Distance/Time: lower = better  |  Visited/Capacity/Spoilage/Urgency: higher = better
+  Spoilage Prevention Rate: % of visited schools where food was NOT spoiled
+  Urgency Completion Rate:  % of high-urgency schools (≤30min) served before spoilage
+==================================================================================

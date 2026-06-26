@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LogiEat OS — Screens (gold, matches shipped app)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#070605;--card:#15120b;--pop:#1c1810;--line:#2a2418;--line2:#3a3220;
+  --ink:#f6f1e6;--ink2:#a99f8b;--inv:#120d03;
+  --gold:#e8b54a;--goldL:#ffd277;--bronze:#77530a;--goldSub:rgba(232,181,74,.14);
+  --rc:#ff6b5c;--rh:#ffbd44;--rm:#ffd60a;--rl:#34c759;
+  --font:'Inter',system-ui,sans-serif;--mono:'JetBrains Mono',monospace;--cinzel:'Cinzel',serif;
+  --soft:0 4px 16px rgba(0,0,0,.5);--lift:0 8px 32px rgba(0,0,0,.6);
+  --glass:rgba(28,24,16,.82);--glassb:saturate(140%) blur(18px);
+  --goldgrad:linear-gradient(120deg,#fff0cf,#ffd277 45%,#c9962f);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font);background:#0a0907;color:var(--ink);-webkit-font-smoothing:antialiased;padding:36px 20px 90px;line-height:1.5}
+.head{max-width:1340px;margin:0 auto 6px}
+.head h1{font-size:28px;font-weight:600;letter-spacing:-.02em}.head h1 b{color:var(--goldL)}
+.head h1 .c{font-family:var(--cinzel);color:transparent;background:var(--goldgrad);-webkit-background-clip:text;background-clip:text}
+.head p{color:var(--ink2);font-size:14px;margin-top:6px}.head code{color:var(--goldL);font-family:var(--mono);font-size:12px}
+.badge{display:inline-block;margin-top:10px;font-size:12px;color:var(--goldL);background:var(--goldSub);border:1px solid rgba(232,181,74,.3);padding:4px 12px;border-radius:60px}
+.legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:14px;font-size:12px;color:var(--ink2)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.dot{width:9px;height:9px;border-radius:50%;display:inline-block}
+.section-t{max-width:1340px;margin:46px auto 4px;font-size:13px;font-weight:600;color:var(--goldL);text-transform:uppercase;letter-spacing:.1em}
+.section-d{max-width:1340px;margin:0 auto 22px;color:var(--ink2);font-size:13px}
+.grid{max-width:1340px;margin:0 auto;display:flex;gap:34px;flex-wrap:wrap;align-items:flex-start}
+.col{display:flex;flex-direction:column;align-items:center;gap:10px}
+.cap{font-size:12px;color:var(--ink2);font-weight:500;max-width:300px;text-align:center}.cap b{color:var(--ink)}
+
+/* phone */
+.phone{width:300px;height:640px;background:#000;border-radius:42px;border:10px solid #161208;box-shadow:var(--lift),0 0 0 2px #000;position:relative;overflow:hidden}
+.phone::before{content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);width:120px;height:26px;background:#161208;border-radius:0 0 16px 16px;z-index:50}
+.scr{position:absolute;inset:0;border-radius:32px;overflow:hidden;display:flex;flex-direction:column;background:var(--bg)}
+.sb{height:32px;display:flex;align-items:center;justify-content:space-between;padding:8px 22px 0;font-size:11px;color:var(--ink);font-weight:600;flex-shrink:0}
+.mono{font-family:var(--mono)}
+.btn{background:var(--gold);color:var(--inv);border:none;font-family:var(--font);font-weight:700;font-size:15px;border-radius:60px;height:54px;width:100%;box-shadow:0 6px 18px rgba(232,181,74,.35)}
+.btn-grad{background:var(--goldgrad);color:var(--inv);border:none;font-weight:700;font-size:16px;border-radius:60px;height:56px;width:100%;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 8px 20px rgba(232,181,74,.4)}
+.chip{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.03em;padding:3px 9px;border-radius:6px}
+.rc{color:var(--rc);background:rgba(255,107,92,.16)}.rh{color:var(--rh);background:rgba(255,189,68,.16)}.rl{color:var(--rl);background:rgba(52,199,89,.16)}
+.pulse{animation:p 1.4s infinite}@keyframes p{0%,100%{opacity:1}50%{opacity:.45}}
+.field{margin-top:16px}.field label{display:block;font-size:12px;color:var(--ink2);margin-bottom:6px}
+.field .inp{height:54px;border-radius:12px;background:var(--pop);border:1px solid var(--line2);padding:0 14px;display:flex;align-items:center;font-size:15px;color:var(--ink2)}
+/* bottom tab bar */
+.tabbar{height:58px;border-top:1px solid var(--line);background:var(--card);display:flex;align-items:center;justify-content:space-around;flex-shrink:0}
+.tab{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10px;color:var(--ink2);font-weight:600}
+.tab .ic{font-size:18px}.tab.on{color:var(--goldL)}
+.mapbg{position:absolute;inset:0;background:repeating-linear-gradient(90deg,#0e0c08,#0e0c08 36px,#0b0a06 36px,#0b0a06 38px),repeating-linear-gradient(0deg,#0e0c08,#0e0c08 36px,#0b0a06 36px,#0b0a06 38px)}
+.pin{position:absolute;width:22px;height:22px;border-radius:50% 50% 50% 2px;transform:rotate(45deg);border:2px solid #000}
+.pin.c{background:var(--rc)}.pin.m{background:var(--rm)}.pin.dep{background:var(--goldL)}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px}
+.kpi .l{font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink2);font-weight:600}
+.kpi .v{font-family:var(--mono);font-size:22px;font-weight:600;margin-top:5px}
+
+/* web window */
+.win{width:900px;background:var(--bg);border-radius:12px;border:1px solid var(--line);overflow:hidden;box-shadow:var(--lift);font-size:13px}
+.win .wb{display:flex;align-items:center;gap:8px;padding:11px 16px;border-bottom:1px solid var(--line)}
+.win .wb .d{width:11px;height:11px;border-radius:50%}.win .wb .url{margin-left:10px;font-size:12px;color:var(--ink2)}
+.nav{display:flex;align-items:center;gap:16px;padding:13px 22px;border-bottom:1px solid var(--line)}
+.nav .lg{font-family:var(--cinzel);font-weight:700;color:var(--goldL);margin-right:6px}
+.nav a{color:var(--ink2);font-size:13px;padding:5px 2px}.nav a.on{color:var(--ink);font-weight:500;border-bottom:2px solid var(--gold);padding-bottom:11px}
+.nav .r{margin-left:auto;font-size:12px;color:var(--ink2)}
+.row{display:flex;align-items:center;gap:10px;padding:11px 16px;border-bottom:1px solid var(--line);font-size:12px}.row:last-child{border:none}
+.cb{width:16px;height:16px;border-radius:4px;border:1.5px solid var(--line2);flex-shrink:0}
+.cb.on{background:var(--gold);border-color:var(--gold);position:relative}.cb.on::after{content:"✓";color:var(--inv);font-size:11px;font-weight:700;position:absolute;left:2px;top:-2px}
+.oid{font-family:var(--mono);color:var(--ink2);font-size:11px}.nm{flex:1}.pax{font-family:var(--mono);color:var(--ink2);font-size:11px}
+.gbtn{background:var(--gold);color:var(--inv);border:none;border-radius:60px;padding:8px 16px;font-weight:700;font-size:12px;font-family:var(--font)}
+.note{max-width:1340px;margin:40px auto 0;color:var(--ink2);font-size:12px;border-top:1px solid var(--line);padding-top:16px}
+.note code{color:var(--goldL);font-family:var(--mono)}
+</style>
+</head>
+<body>
+
+<div class="head">
+  <h1>LogiEat <b>OS</b> — Screens · <span class="c">Gold</span></h1>
+  <p>Cerminan <b>app yang sudah jadi</b>: 2 APK (Kurir + Manager) + admin web. Tema gold/black, navigasi turn-by-turn.</p>
+  <span class="badge">● Sesuai build nyata · accent emas #e8b54a</span>
+  <div class="legend">
+    <span><i class="dot" style="background:#ff6b5c"></i>critical</span>
+    <span><i class="dot" style="background:#ffbd44"></i>high</span>
+    <span><i class="dot" style="background:#34c759"></i>low/online</span>
+    <span><i class="dot" style="background:#e8b54a"></i>emas/accent</span>
+    <span><i class="dot" style="background:#ffd277"></i>depot/kurir</span>
+  </div>
+</div>
+
+<!-- ===== APP KURIR ===== -->
+<div class="section-t">LogiEat Kurir — APK Android</div>
+<div class="section-d">Welcome → Login → Tugas → Navigasi turn-by-turn → Bukti Antar → Chat. Bottom tab bar (zona jempol).</div>
+<div class="grid">
+
+  <!-- Welcome -->
+  <div class="col"><div class="phone"><div class="scr">
+    <div class="sb"><span>9:41</span><span>5G ▮▮▮</span></div>
+    <div style="position:absolute;top:-120px;left:-60px;right:-60px;height:400px;border-radius:300px;background:radial-gradient(rgba(232,181,74,.18),transparent 65%)"></div>
+    <div style="flex:1;padding:28px;display:flex;flex-direction:column;justify-content:center;position:relative">
+      <div style="width:76px;height:76px;border-radius:22px;background:var(--goldgrad);display:flex;align-items:center;justify-content:center;font-size:34px;color:#1a1206;box-shadow:0 10px 30px rgba(232,181,74,.5)">◈</div>
+      <div style="align-self:flex-start;margin-top:18px;background:var(--goldSub);border:1px solid rgba(232,181,74,.3);border-radius:60px;padding:6px 12px;font-size:11px;font-weight:700;letter-spacing:1.5px;color:var(--goldL)">LOGIEAT · KURIR</div>
+      <div style="font-size:40px;font-weight:700;line-height:1.05;margin-top:16px;letter-spacing:-1px">Antar lebih<br>cepat & <span style="color:var(--goldL)">pintar.</span></div>
+      <div style="color:var(--ink2);font-size:15px;margin-top:12px">Rute pasti, bukti foto, & live GPS.</div>
+      <div style="margin-top:28px;display:flex;flex-direction:column;gap:16px">
+        <div style="display:flex;align-items:center;gap:14px"><div style="width:46px;height:46px;border-radius:14px;background:var(--goldSub);border:1px solid rgba(232,181,74,.2);display:flex;align-items:center;justify-content:center;color:var(--goldL);font-size:18px">◉</div><div><div style="font-size:15px;font-weight:600">AI Routing</div><div style="font-size:13px;color:var(--ink2)">Urutan paling efisien</div></div></div>
+        <div style="display:flex;align-items:center;gap:14px"><div style="width:46px;height:46px;border-radius:14px;background:var(--goldSub);border:1px solid rgba(232,181,74,.2);display:flex;align-items:center;justify-content:center;color:var(--goldL);font-size:18px">◎</div><div><div style="font-size:15px;font-weight:600">Live GPS</div><div style="font-size:13px;color:var(--ink2)">Terpantau dapur pusat</div></div></div>
+      </div>
+    </div>
+    <div style="padding:0 28px 24px"><div class="btn-grad">Masuk →</div></div>
+  </div></div><div class="cap"><b>Welcome</b> · emblem gradasi emas + animasi (role-aware)</div></div>
+
+  <!-- Tugas + tabbar -->
+  <div class="col"><div class="phone"><div class="scr">
+    <div class="sb"><span>9:41</span><span>5G ▮▮▮</span></div>
+    <div style="padding:14px 18px"><div style="font-size:20px;font-weight:600">Tugas Hari Ini</div><div style="font-size:12px;color:var(--ink2)">4 pengantaran · urutan AI</div></div>
+    <div style="display:flex;margin:0 16px;padding:14px;border-radius:12px;background:var(--card);border:1px solid var(--line)">
+      <div style="flex:1"><div style="font-size:10px;text-transform:uppercase;color:var(--ink2);font-weight:600">Stop</div><div class="mono" style="font-size:17px;font-weight:600">4</div></div>
+      <div style="flex:1"><div style="font-size:10px;text-transform:uppercase;color:var(--ink2);font-weight:600">Jarak</div><div class="mono" style="font-size:17px;font-weight:600">10.3km</div></div>
+      <div style="flex:1"><div style="font-size:10px;text-transform:uppercase;color:var(--ink2);font-weight:600">ETA</div><div class="mono" style="font-size:17px;font-weight:600">21m</div></div>
+    </div>
+    <div style="padding:14px 16px;display:flex;flex-direction:column;gap:9px;flex:1">
+      <div style="background:var(--card);border:1px solid var(--line);border-radius:12px;padding:13px;display:flex;align-items:center;gap:10px"><span class="mono" style="color:var(--goldL);font-weight:700">1</span><div style="flex:1"><div style="font-weight:600;font-size:13px">SMP 12 Cikini</div><div style="font-size:11px;color:var(--ink2)">#1023 · Tempe · 15 pax</div></div><span class="chip rc">critical</span></div>
+      <div style="background:var(--card);border:1px solid var(--line);border-radius:12px;padding:13px;display:flex;align-items:center;gap:10px"><span class="mono" style="color:var(--goldL);font-weight:700">2</span><div style="flex:1"><div style="font-weight:600;font-size:13px">Kantor Walikota</div><div style="font-size:11px;color:var(--ink2)">#1022 · Opor · 18 pax</div></div><span class="chip rh">high</span></div>
+    </div>
+    <div style="padding:0 16px 12px"><div class="btn">Mulai Navigasi →</div></div>
+    <div class="tabbar"><div class="tab on"><span class="ic">≣</span>Tugas</div><div class="tab"><span class="ic">✉</span>Chat</div><div class="tab"><span class="ic">◍</span>Profil</div></div>
+  </div></div><div class="cap"><b>Tugas</b> · ringkasan + bottom tab bar emas</div></div>
+
+  <!-- Navigasi turn-by-turn -->
+  <div class="col"><div class="phone"><div class="scr">
+    <div class="sb"><span>9:41</span><span>5G ▮▮▮</span></div>
+    <div style="flex:1;position:relative;background:var(--bg)">
+      <div class="mapbg"></div>
+      <!-- faint full road -->
+      <svg style="position:absolute;inset:0" width="100%" height="100%" viewBox="0 0 280 560" preserveAspectRatio="none">
+        <path d="M40,470 C70,430 60,360 110,340 S150,290 140,230 190,170 200,110" fill="none" stroke="#6b5a2a" stroke-width="7" stroke-opacity=".35" stroke-linecap="round"/>
+        <!-- remaining bright (from courier up) -->
+        <path d="M110,340 C150,290 140,230 140,230 190,170 200,110" fill="none" stroke="#ffd277" stroke-width="7" stroke-linecap="round"/>
+      </svg>
+      <div class="pin c" style="left:68%;top:16%"></div>
+      <!-- courier arrow -->
+      <div style="position:absolute;left:36%;top:58%;width:28px;height:28px;border-radius:50%;background:var(--gold);border:2px solid #000;display:flex;align-items:center;justify-content:center;color:#1a1206;font-size:14px;box-shadow:0 0 0 6px rgba(232,181,74,.25)">▲</div>
+      <!-- turn banner -->
+      <div style="position:absolute;top:12px;left:12px;right:12px;display:flex;align-items:center;gap:12px;background:var(--glass);backdrop-filter:var(--glassb);border:1px solid var(--line2);border-radius:16px;padding:12px 14px">
+        <div style="font-size:26px;color:var(--goldL)">↱</div><div style="flex:1"><div style="font-size:16px;font-weight:600">Belok kanan ke Jl. Cikini</div><div class="mono" style="font-size:12px;color:var(--ink2)">120 m</div></div>
+      </div>
+      <div style="position:absolute;right:14px;bottom:230px;width:44px;height:44px;border-radius:50%;background:var(--card);border:1px solid var(--line2);display:flex;align-items:center;justify-content:center;color:var(--goldL)">◎</div>
+      <div style="position:absolute;left:0;right:0;bottom:0;background:var(--card);border-radius:18px 18px 0 0;border-top:1px solid var(--line);padding:16px 16px 26px">
+        <div style="width:34px;height:4px;border-radius:9px;background:var(--line2);margin:0 auto 12px"></div>
+        <div style="display:flex;justify-content:space-between;align-items:center"><span class="chip rl"><i class="dot" style="background:#34c759"></i>Aktif</span><span style="font-size:12px;color:var(--ink2)">Stop <b class="mono" style="color:#f6f1e6">3/7</b></span></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin:12px 0"><div><div style="font-size:14px;font-weight:600">SMP 12 Cikini</div><div style="font-size:11px;color:var(--ink2)">Berikutnya · Tempe Kering</div></div><span class="chip rc pulse"><i class="dot" style="background:#ff6b5c"></i>crit</span></div>
+        <div class="btn">Konfirmasi Tiba & Foto</div>
+      </div>
+    </div>
+  </div></div><div class="cap"><b>Navigasi turn-by-turn</b> · OSRM ikut jalan · sisa rute emas (yg dilewati hilang) · banner belokan + follow GPS</div></div>
+
+  <!-- PoD -->
+  <div class="col"><div class="phone"><div class="scr">
+    <div class="sb"><span>9:41</span><span>5G ▮▮▮</span></div>
+    <div style="flex:1;position:relative;background:#050505">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 18px"><span style="font-size:18px">✕</span><span style="font-size:14px;font-weight:600">Bukti Antar · SMP 12</span><span style="width:18px"></span></div>
+      <div style="position:absolute;inset:54px 16px 130px;border-radius:16px;background:repeating-linear-gradient(120deg,#15120b,#15120b 12px,#0f0d08 12px,#0f0d08 24px);overflow:hidden">
+        <div style="position:absolute;left:14px;top:14px;width:26px;height:26px;border-left:3px solid #fff;border-top:3px solid #fff;opacity:.7"></div>
+        <div style="position:absolute;right:14px;bottom:14px;width:26px;height:26px;border-right:3px solid #fff;border-bottom:3px solid #fff;opacity:.7"></div>
+      </div>
+      <div style="position:absolute;left:0;right:0;bottom:0;padding:20px;text-align:center">
+        <div style="font-size:12px;color:var(--ink2);margin-bottom:14px">Foto makanan diterima sebelum lanjut</div>
+        <div style="width:72px;height:72px;border-radius:50%;border:4px solid #fff;margin:0 auto;display:flex;align-items:center;justify-content:center"><div style="width:56px;height:56px;border-radius:50%;background:var(--gold)"></div></div>
+      </div>
+    </div>
+  </div></div><div class="cap"><b>Bukti Antar</b> · expo-camera → kompres + geotag → upload</div></div>
+
+  <!-- Chat -->
+  <div class="col"><div class="phone"><div class="scr">
+    <div class="sb"><span>9:41</span><span>5G ▮▮▮</span></div>
+    <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--line)">
+      <div style="width:36px;height:36px;border-radius:50%;background:var(--goldSub);display:flex;align-items:center;justify-content:center;color:var(--goldL);font-weight:600;font-size:13px;position:relative">DP<i style="position:absolute;right:-1px;bottom:-1px;width:11px;height:11px;border-radius:50%;background:var(--rl);border:2px solid #000"></i></div>
+      <div style="flex:1"><div style="font-weight:600;font-size:15px">Dapur Pusat</div><div style="font-size:11px;color:var(--rl)">online</div></div>
+    </div>
+    <div style="flex:1;padding:14px;display:flex;flex-direction:column;gap:10px">
+      <div style="align-self:flex-start;max-width:78%;background:var(--card);border:1px solid var(--line);border-radius:14px 14px 14px 4px;padding:9px 12px;font-size:14px">Prioritaskan SMP 12 ya.</div>
+      <div style="align-self:flex-end;max-width:78%;background:var(--gold);color:var(--inv);border-radius:14px 14px 4px 14px;padding:9px 12px;font-size:14px;font-weight:500">Siap, OTW pak 🛵</div>
+    </div>
+    <div style="padding:10px 14px;display:flex;gap:10px;align-items:center;border-top:1px solid var(--line)">
+      <div style="flex:1;height:44px;border-radius:60px;background:var(--pop);border:1px solid var(--line2);display:flex;align-items:center;padding:0 16px;font-size:14px;color:var(--ink2)">Tulis pesan…</div>
+      <div style="width:44px;height:44px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;color:var(--inv)">➤</div>
+    </div>
+    <div class="tabbar"><div class="tab"><span class="ic">≣</span>Tugas</div><div class="tab on"><span class="ic">✉</span>Chat</div><div class="tab"><span class="ic">◍</span>Profil</div></div>
+  </div></div><div class="cap"><b>Chat</b> · realtime WebSocket</div></div>
+</div>
+
+<!-- ===== APP MANAGER ===== -->
+<div class="section-t">LogiEat Manager — APK Android (Catering)</div>
+<div class="section-d">Dispatch AI · Pesanan · Armada live · Kurir (approve) · Statistik. Tab bar bawah.</div>
+<div class="grid">
+
+  <!-- Dispatch -->
+  <div class="col"><div class="phone"><div class="scr">
+    <div class="sb"><span>9:41</span><span>5G ▮▮▮</span></div>
+    <div style="padding:14px 18px"><div style="font-size:20px;font-weight:600">Dispatcher</div><div style="font-size:12px;color:var(--ink2)">Pilih kurir & pesanan, AI susun rute.</div></div>
+    <div style="padding:0 16px;flex:1">
+      <div style="font-size:11px;text-transform:uppercase;color:var(--ink2);font-weight:600;margin-bottom:8px">Kurir</div>
+      <div style="display:flex;gap:8px;margin-bottom:14px"><div style="padding:0 16px;height:38px;border-radius:60px;background:var(--gold);color:var(--inv);display:flex;align-items:center;font-size:13px;font-weight:700">Joni</div><div style="padding:0 16px;height:38px;border-radius:60px;border:1px solid var(--line2);display:flex;align-items:center;font-size:13px">Tono</div></div>
+      <div style="font-size:11px;text-transform:uppercase;color:var(--ink2);font-weight:600;margin-bottom:8px">Pesanan pending</div>
+      <div style="background:var(--card);border:1px solid var(--line);border-radius:12px;padding:13px;display:flex;align-items:center;gap:10px;margin-bottom:9px"><div style="width:22px;height:22px;border-radius:6px;background:var(--gold);display:flex;align-items:center;justify-content:center;color:var(--inv);font-weight:700">✓</div><div style="flex:1"><div style="font-weight:600;font-size:13px">SMP 12 Cikini</div><div style="font-size:11px;color:var(--ink2)">#1023 · Kering · 15 pax</div></div></div>
+      <div style="background:var(--card);border:1px solid var(--line);border-radius:12px;padding:13px;display:flex;align-items:center;gap:10px"><div style="width:22px;height:22px;border-radius:6px;background:var(--gold);display:flex;align-items:center;justify-content:center;color:var(--inv);font-weight:700">✓</div><div style="flex:1"><div style="font-weight:600;font-size:13px">Kantor Walikota</div><div style="font-size:11px;color:var(--ink2)">#1022 · Basah · 18 pax</div></div></div>
+    </div>
+    <div style="padding:14px 16px;display:flex;align-items:center;gap:12px;background:var(--card);border-top:1px solid var(--line)"><span style="font-size:13px;color:var(--ink2)">2 · 33 pax</span><div class="btn" style="flex:1">◈ Optimasi Rute (AI)</div></div>
+    <div class="tabbar"><div class="tab on"><span class="ic">➤</span>Dispatch</div><div class="tab"><span class="ic">▤</span>Pesanan</div><div class="tab"><span class="ic">◉</span>Armada</div><div class="tab"><span class="ic">◍</span>Kurir</div><div class="tab"><span class="ic">▥</span>Stat</div></div>
+  </div></div><div class="cap"><b>Dispatch</b> · centang → AI A2C → kirim (push ke kurir)</div></div>
+
+  <!-- Armada -->
+  <div class="col"><div class="phone"><div class="scr">
+    <div class="sb"><span>9:41</span><span>5G ▮▮▮</span></div>
+    <div style="padding:14px 18px 8px"><div style="font-size:20px;font-weight:600">Armada Live</div></div>
+    <div style="flex:1;margin:0 12px;border-radius:12px;border:1px solid var(--line);overflow:hidden;position:relative"><div class="mapbg"></div>
+      <div style="position:absolute;left:30%;top:30%;width:30%;height:34%;border-left:3px solid var(--gold);border-bottom:3px solid var(--gold);border-bottom-left-radius:40px;filter:drop-shadow(0 0 6px rgba(232,181,74,.7))"></div>
+      <div class="pin dep" style="left:28%;top:66%"></div><div style="position:absolute;left:60%;top:30%;width:24px;height:24px;border-radius:50%;background:var(--gold);border:2px solid #000;box-shadow:0 0 0 5px rgba(232,181,74,.3)"></div><div style="position:absolute;left:44%;top:50%;width:24px;height:24px;border-radius:50%;background:var(--gold);border:2px solid #000;box-shadow:0 0 0 5px rgba(232,181,74,.3)"></div>
+    </div>
+    <div style="height:150px;margin:12px;background:var(--card);border:1px solid var(--line);border-radius:12px;display:flex;flex-direction:column">
+      <div style="padding:10px 12px;border-bottom:1px solid var(--line);font-size:12px;font-weight:600">Chat Armada</div>
+      <div style="flex:1;padding:10px;display:flex;flex-direction:column;gap:6px"><div style="align-self:flex-start;background:var(--pop);border:1px solid var(--line);border-radius:10px;padding:6px 10px;font-size:12px">OTW pak</div><div style="align-self:flex-end;background:var(--gold);color:var(--inv);border-radius:10px;padding:6px 10px;font-size:12px">Oke</div></div>
+    </div>
+    <div class="tabbar"><div class="tab"><span class="ic">➤</span>Dispatch</div><div class="tab"><span class="ic">▤</span>Pesanan</div><div class="tab on"><span class="ic">◉</span>Armada</div><div class="tab"><span class="ic">◍</span>Kurir</div><div class="tab"><span class="ic">▥</span>Stat</div></div>
+  </div></div><div class="cap"><b>Armada Live</b> · marker bergerak (GPS WS) + chat</div></div>
+
+  <!-- Statistik -->
+  <div class="col"><div class="phone"><div class="scr">
+    <div class="sb"><span>9:41</span><span>5G ▮▮▮</span></div>
+    <div style="padding:14px 18px"><div style="font-size:20px;font-weight:600">Statistik</div></div>
+    <div style="padding:0 16px;flex:1;display:flex;flex-direction:column;gap:10px">
+      <div style="display:flex;gap:10px"><div class="kpi" style="flex:1"><div class="l">Penjualan</div><div class="v">Rp 1.2jt</div></div><div class="kpi" style="flex:1"><div class="l">Terkirim</div><div class="v">142</div></div></div>
+      <div style="background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px"><div style="font-size:12px;font-weight:600;margin-bottom:10px">Tren Penjualan · 12 Bln</div>
+        <div style="display:flex;align-items:flex-end;height:80px;gap:3px">
+          <div style="flex:1;height:30%;background:var(--gold);border-radius:3px"></div><div style="flex:1;height:45%;background:var(--gold);border-radius:3px"></div><div style="flex:1;height:38%;background:var(--gold);border-radius:3px"></div><div style="flex:1;height:62%;background:var(--gold);border-radius:3px"></div><div style="flex:1;height:55%;background:var(--gold);border-radius:3px"></div><div style="flex:1;height:80%;background:var(--gold);border-radius:3px"></div><div style="flex:1;height:95%;background:var(--gold);border-radius:3px"></div>
+        </div>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px"><div style="font-size:12px;font-weight:600;margin-bottom:10px">Rekap Kurir · km</div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:12px;margin-bottom:8px"><span style="width:40px;color:var(--ink2)">Joni</span><div style="flex:1;height:13px;background:var(--pop);border-radius:4px;overflow:hidden"><div style="width:80%;height:100%;background:var(--gold)"></div></div><span class="mono">128km</span></div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:12px"><span style="width:40px;color:var(--ink2)">Tono</span><div style="flex:1;height:13px;background:var(--pop);border-radius:4px;overflow:hidden"><div style="width:50%;height:100%;background:var(--gold)"></div></div><span class="mono">80km</span></div>
+      </div>
+    </div>
+    <div class="tabbar"><div class="tab"><span class="ic">➤</span>Dispatch</div><div class="tab"><span class="ic">▤</span>Pesanan</div><div class="tab"><span class="ic">◉</span>Armada</div><div class="tab"><span class="ic">◍</span>Kurir</div><div class="tab on"><span class="ic">▥</span>Stat</div></div>
+  </div></div><div class="cap"><b>Statistik</b> · KPI + tren + rekap kurir</div></div>
+</div>
+
+<!-- ===== ADMIN WEB ===== -->
+<div class="section-t">Admin Web — Laravel + Inertia/React (Gold)</div>
+<div class="section-d">6 halaman: Beranda · Pesanan · Dispatch · Armada · Kurir · Statistik.</div>
+<div class="grid">
+  <div class="col" style="align-items:flex-start"><div class="win">
+    <div class="wb"><span class="d" style="background:#ff6b5c"></span><span class="d" style="background:#ffbd44"></span><span class="d" style="background:#34c759"></span><span class="url mono">app.logieat.os/dispatch</span></div>
+    <div class="nav"><span class="lg">LogiEat OS</span><a>Beranda</a><a>Pesanan</a><a class="on">Dispatch</a><a>Armada</a><a>Kurir</a><a>Statistik</a><span class="r">Katering Sehat</span></div>
+    <div style="display:grid;grid-template-columns:1.3fr 1fr">
+      <div style="border-right:1px solid var(--line)">
+        <div style="padding:11px 16px;border-bottom:1px solid var(--line);font-weight:600;display:flex;justify-content:space-between;align-items:center">Pesanan belum ditugaskan <span style="font-size:12px;color:var(--ink2);font-weight:400">Kurir: <b style="color:#f6f1e6">Joni ▾</b></span></div>
+        <div class="row"><div class="cb on"></div><span class="oid">#1023</span><span class="nm">Tempe Kering</span><span class="pax">15 pax</span></div>
+        <div class="row"><div class="cb on"></div><span class="oid">#1022</span><span class="nm">Opor Telur</span><span class="pax">18 pax</span></div>
+        <div style="padding:12px 16px;background:var(--pop);display:flex;justify-content:space-between;align-items:center"><span style="font-size:12px;color:var(--ink2)">Terpilih: 2 · 33 pax</span><button class="gbtn">◈ Optimasi Rute (AI)</button></div>
+      </div>
+      <div>
+        <div style="padding:11px 16px;border-bottom:1px solid var(--line);font-weight:600;font-size:12px;color:var(--goldL)">▼ Hasil AI · a2c_spoilage_aware_v2</div>
+        <div style="padding:6px 16px">
+          <div style="display:flex;justify-content:space-between;padding:8px 0;font-size:12px;border-bottom:1px solid var(--line)"><span><b class="mono" style="color:var(--goldL)">1</b> #1023 Tempe</span><span class="mono" style="color:var(--ink2)">3.0km · 6m <span class="chip rc">●</span></span></div>
+          <div style="display:flex;justify-content:space-between;padding:8px 0;font-size:12px"><span><b class="mono" style="color:var(--goldL)">2</b> #1022 Opor</span><span class="mono" style="color:var(--ink2)">1.8km · 10m <span class="chip rh">●</span></span></div>
+        </div>
+        <div style="padding:12px 16px;background:var(--pop);display:flex;justify-content:space-between;align-items:center"><span class="mono" style="font-size:12px;color:var(--ink2)">4.8km · 10m</span><button class="gbtn">Kirim ke Joni →</button></div>
+      </div>
+    </div>
+  </div><div class="cap" style="max-width:900px"><b>Admin web (gold)</b> · Dispatch + 5 halaman lain (Armada live, Kurir approve, Statistik, Pesanan, Beranda)</div></div>
+</div>
+
+<div class="note">
+  <b style="color:#f6f1e6">Catatan —</b> Tema <b>gold/black</b> seragam: 2 APK (<code>app-kurir.apk</code>, <code>app-manager.apk</code>) + admin web + landing.
+  Navigasi kurir = <b>turn-by-turn</b> (OSRM, rute ikut jalan + highlight sisa rute + follow GPS). Realtime GPS/chat via WebSocket Go; rute/urgensi dari A2C <code>app.py</code>.
+</div>
+
+</body>
+</html>

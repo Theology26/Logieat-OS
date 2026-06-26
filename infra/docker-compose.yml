@@ -1,0 +1,52 @@
+# LogiEat OS — all-in-one stack (production / full-docker dev).
+# Local dev tip: you can instead run MySQL, Redis, PHP & Node via Laragon, and only use
+# this file for `osrm` (+ optionally `ai-service`). See ../docs/ARCHITECTURE.md §8.
+services:
+  mysql:
+    image: mysql:8.4
+    environment:
+      MYSQL_DATABASE: logieat
+      MYSQL_ROOT_PASSWORD: root
+    ports: ["3306:3306"]
+    volumes: ["mysql_data:/var/lib/mysql"]
+
+  redis:
+    image: redis:7-alpine
+    ports: ["6379:6379"]
+
+  ai-service:
+    build: ../ai-service
+    ports: ["9000:9000"]
+    environment:
+      # NVIDIA_API_KEY optional — app.py falls back to heuristic/mocks without it
+      NVIDIA_API_KEY: ${NVIDIA_API_KEY:-}
+
+  go-core:
+    build: ../backend-go
+    ports: ["8080:8080"]
+    environment:
+      PORT: "8080"
+      DB_DSN: "root:root@tcp(mysql:3306)/logieat?parseTime=true&loc=UTC"
+      REDIS_URL: "redis://redis:6379"
+      AI_SERVICE_URL: "http://ai-service:9000"
+      OSRM_URL: "http://osrm:5000"
+      JWT_SECRET: "${JWT_SECRET:-change-me-shared-with-laravel}"
+    depends_on: [mysql, redis, ai-service]
+
+  osrm:
+    image: osrm/osrm-backend
+    # Prepare a region first (one-time), then serve:
+    #   osrm-extract -p /opt/car.lua /data/region.osm.pbf
+    #   osrm-partition /data/region.osrm && osrm-customize /data/region.osrm
+    command: osrm-routed --algorithm mld /data/region.osrm
+    ports: ["5000:5000"]
+    volumes: ["./osrm:/data"]
+
+  # laravel-admin: add after `composer create-project` (see ../admin-laravel/README.md)
+  # laravel-admin:
+  #   build: ../admin-laravel
+  #   ports: ["8000:80"]
+  #   depends_on: [mysql, redis]
+
+volumes:
+  mysql_data:

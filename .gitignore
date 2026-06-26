@@ -1,0 +1,48 @@
+# node
+node_modules/
+packages/tokens/dist/
+# go
+backend-go/core
+*.exe
+# env
+.env
+.env.local
+# laravel (after bootstrap)
+admin-laravel/vendor/
+admin-laravel/node_modules/
+admin-laravel/storage/*.key
+# expo (after bootstrap)
+mobile-expo/node_modules/
+mobile-expo/.expo/
+# python
+**/.venv/
+**/venv/
+**/__pycache__/
+*.pyc
+ai-service/__pycache__/
+ai-service/*.log
+# training artifacts (keep out of git). NOTE: a2c_best.pth/a2c_weights.pth (~3MB) ARE tracked
+# — they're the trained model and make the repo self-contained.
+ai-service/kaggle_upload/
+ai-service/training_a2c/
+# osm data
+infra/osrm/*.osm.pbf
+infra/osrm/*.osrm*
+# os
+Thumbs.db
+.DS_Store
+mobile-expo/dist/
+
+# apk + generated native project
+*.apk
+mobile-expo/android/
+mobile-expo/ios/
+
+# excluded from the public repo (internal/agent files)
+CLAUDE.md
+SETUP.md
+design.md
+.claude/
+**/CLAUDE.md
+**/AGENTS.md
+mobile-expo/app-example/

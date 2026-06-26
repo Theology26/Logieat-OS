@@ -1,0 +1,10 @@
+fastapi==0.111.0
+uvicorn[standard]==0.29.0
+python-dotenv==1.0.1
+requests==2.32.2
+numpy==1.26.4
+Pillow==10.3.0
+opencv-python-headless==4.9.0.80
+matplotlib>=3.8.0
+# torch and torchvision are installed via --index-url in Dockerfile (CPU-only wheel)
+# Do not add them here to avoid pip pulling the ~900MB CUDA variant

@@ -1,0 +1,85 @@
+{
+  "metadata": {
+    "timestamp": "2026-06-12T16:37:34Z",
+    "llama_vision_model": "meta/llama-3.2-90b-vision-instruct",
+    "nemotron_model": "meta/llama-3.3-70b-instruct"
+  },
+  "llama_vision": {
+    "total_runs": 3,
+    "success_runs": 3,
+    "latencies_ms": [
+      30795.696258544922,
+      73850.06475448608,
+      11461.87138557434
+    ],
+    "avg_latency_ms": 38702.54413286845,
+    "min_latency_ms": 11461.87138557434,
+    "max_latency_ms": 73850.06475448608,
+    "token_usages": [
+      {
+        "prompt_tokens": 1644,
+        "total_tokens": 1715,
+        "completion_tokens": 71,
+        "prompt_tokens_details": null
+      },
+      {
+        "prompt_tokens": 1644,
+        "total_tokens": 1715,
+        "completion_tokens": 71,
+        "prompt_tokens_details": null
+      },
+      {
+        "prompt_tokens": 1644,
+        "total_tokens": 1715,
+        "completion_tokens": 71,
+        "prompt_tokens_details": null
+      }
+    ]
+  },
+  "nemotron_70b": {
+    "total_runs": 5,
+    "success_runs": 5,
+    "latencies_ms": [
+      1264.232873916626,
+      12374.106884002686,
+      2242.213487625122,
+      18343.059301376343,
+      3717.2467708587646
+    ],
+    "avg_latency_ms": 7588.171863555908,
+    "min_latency_ms": 1264.232873916626,
+    "max_latency_ms": 18343.059301376343,
+    "token_usages": [
+      {
+        "prompt_tokens": 71,
+        "total_tokens": 85,
+        "completion_tokens": 14,
+        "prompt_tokens_details": null
+      },
+      {
+        "prompt_tokens": 72,
+        "total_tokens": 86,
+        "completion_tokens": 14,
+        "prompt_tokens_details": null
+      },
+      {
+        "prompt_tokens": 73,
+        "total_tokens": 87,
+        "completion_tokens": 14,
+        "prompt_tokens_details": null
+      },
+      {
+        "prompt_tokens": 72,
+        "total_tokens": 86,
+        "completion_tokens": 14,
+        "prompt_tokens_details": null
+      },
+      {
+        "prompt_tokens": 73,
+        "total_tokens": 87,
+        "completion_tokens": 14,
+        "prompt_tokens_details": null
+      }
+    ]
+  }
+}

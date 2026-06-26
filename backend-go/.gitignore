@@ -1,0 +1,4 @@
+/core
+*.exe
+.env
+/tmp/

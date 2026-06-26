@@ -1,0 +1,57 @@
+{
+  "metadata": {
+    "timestamp": "2026-06-12T16:33:09Z",
+    "target_url": "http://localhost:8080/health",
+    "total_runs": 4
+  },
+  "concurrency_runs": [
+    {
+      "concurrency": 10,
+      "total_requests": 200,
+      "duration_sec": 0.21957612037658691,
+      "rps": 910.8458590897196,
+      "success_rate": 100.0,
+      "avg_latency_ms": 9.776962995529175,
+      "max_latency_ms": 21.794557571411133,
+      "p50_latency_ms": 9.585976600646973,
+      "p95_latency_ms": 12.603604793548582,
+      "p99_latency_ms": 14.152200222015367
+    },
+    {
+      "concurrency": 30,
+      "total_requests": 200,
+      "duration_sec": 0.2199094295501709,
+      "rps": 909.4653212875136,
+      "success_rate": 100.0,
+      "avg_latency_ms": 31.226859092712402,
+      "max_latency_ms": 46.51641845703125,
+      "p50_latency_ms": 32.37926959991455,
+      "p95_latency_ms": 38.820147514343255,
+      "p99_latency_ms": 43.17445993423461
+    },
+    {
+      "concurrency": 50,
+      "total_requests": 200,
+      "duration_sec": 0.19190073013305664,
+      "rps": 1042.2055187665396,
+      "success_rate": 100.0,
+      "avg_latency_ms": 47.09169149398804,
+      "max_latency_ms": 91.95280075073242,
+      "p50_latency_ms": 44.625043869018555,
+      "p95_latency_ms": 79.25899028778076,
+      "p99_latency_ms": 90.83816289901733
+    },
+    {
+      "concurrency": 100,
+      "total_requests": 200,
+      "duration_sec": 0.30002713203430176,
+      "rps": 666.6063787095569,
+      "success_rate": 100.0,
+      "avg_latency_ms": 146.1437165737152,
+      "max_latency_ms": 282.5927734375,
+      "p50_latency_ms": 146.3487148284912,
+      "p95_latency_ms": 265.36868810653687,
+      "p99_latency_ms": 276.73394441604614
+    }
+  ]
+}
