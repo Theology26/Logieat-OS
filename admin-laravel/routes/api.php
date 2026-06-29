@@ -8,12 +8,11 @@ use App\Http\Controllers\OwnerApiController;
 use App\Http\Controllers\SubscriptionController;
 use Illuminate\Support\Facades\Route;
 
-// ── Public auth ──────────────────────────────────────────────
+// Public auth
 Route::post('/auth/register-owner', [AuthController::class, 'registerOwner']);
 Route::post('/auth/register-courier', [AuthController::class, 'registerCourier']);
 Route::post('/auth/login', [AuthController::class, 'login']);
 
-// ── Authenticated (JWT) ──────────────────────────────────────
 Route::middleware('jwt.auth')->group(function () {
     Route::get('/auth/me', [AuthController::class, 'me']);
 
@@ -29,7 +28,7 @@ Route::middleware('jwt.auth')->group(function () {
     // Orders (owner/admin)
     Route::apiResource('orders', OrderController::class);
 
-    // Catering (owner) app
+    // Catering owner app
     Route::get('/analytics', [OwnerApiController::class, 'analytics']);
     Route::get('/fleet/locations', [OwnerApiController::class, 'fleetLocations']);
 
@@ -39,6 +38,4 @@ Route::middleware('jwt.auth')->group(function () {
     Route::post('/courier/routes/{route}/complete', [CourierTaskController::class, 'complete']);
     Route::post('/courier/assignments/{assignment}/deliver', [CourierTaskController::class, 'deliver']);
     Route::post('/courier/push-token', [CourierTaskController::class, 'pushToken']);
-
-    // Phase 2+: dispatch trigger (Go core), analytics…
 });

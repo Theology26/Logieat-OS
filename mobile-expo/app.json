@@ -26,7 +26,8 @@
       "expo-secure-store",
       ["expo-camera", { "cameraPermission": "Izinkan akses kamera untuk bukti pengantaran (PoD)." }],
       ["expo-location", { "locationWhenInUsePermission": "Izinkan lokasi untuk navigasi & pelacakan pengantaran." }],
-      ["expo-notifications", { "color": "#5264AE" }]
+      ["expo-notifications", { "color": "#5264AE" }],
+      ["expo-build-properties", { "android": { "usesCleartextTraffic": true } }]
     ]
   }
 }

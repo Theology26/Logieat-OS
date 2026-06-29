@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { View, Text, TextInput, Pressable, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { theme } from '../theme';
+import { useTheme } from '../lib/theme-context';
+import type { Theme } from '../theme';
 import { api, ApiError } from '../lib/api';
 import { config } from '../lib/config';
 import { PrimaryButton } from '../components/Buttons';
@@ -9,6 +10,8 @@ import { PrimaryButton } from '../components/Buttons';
 const isCatering = config.appRole === 'catering';
 
 export default function LoginScreen({ navigation }: any) {
+  const theme = useTheme();
+  const s = makeStyles(theme);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -40,8 +43,8 @@ export default function LoginScreen({ navigation }: any) {
         <Text style={s.title}>{isCatering ? 'Masuk Catering' : 'Masuk Kurir'}</Text>
         <Text style={s.sub}>{isCatering ? 'Akun owner / admin katering.' : 'Gunakan akun dari kateringmu.'}</Text>
 
-        <Field label="Email" value={email} onChangeText={setEmail} keyboardType="email-address" autoCapitalize="none" />
-        <Field label="Kata sandi" value={password} onChangeText={setPassword} secureTextEntry />
+        <Field label="Email" value={email} onChangeText={setEmail} keyboardType="email-address" autoCapitalize="none" s={s} ph={theme.color.ink2} />
+        <Field label="Kata sandi" value={password} onChangeText={setPassword} secureTextEntry s={s} ph={theme.color.ink2} />
 
         {error && <Text style={s.error}>{error}</Text>}
 
@@ -54,20 +57,20 @@ export default function LoginScreen({ navigation }: any) {
   );
 }
 
-function Field({ label, ...props }: any) {
+function Field({ label, s, ph, ...props }: any) {
   return (
     <View style={{ marginTop: 16 }}>
       <Text style={s.label}>{label}</Text>
       <TextInput
         {...props}
-        placeholderTextColor={theme.color.ink2}
+        placeholderTextColor={ph}
         style={s.input}
       />
     </View>
   );
 }
 
-const s = StyleSheet.create({
+const makeStyles = (theme: Theme) => StyleSheet.create({
   root: { flex: 1, backgroundColor: theme.color.bg },
   body: { flex: 1, paddingHorizontal: 24, justifyContent: 'center' },
   brand: { color: theme.color.accentT, fontWeight: '600', fontSize: 13, letterSpacing: 1 },

@@ -1,6 +1,6 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
-import { theme } from '../theme';
+import { useTheme } from '../lib/theme-context';
 import TasksScreen from '../screens/TasksScreen';
 import ChatScreen from '../screens/ChatScreen';
 import ProfileScreen from '../screens/ProfileScreen';
@@ -9,6 +9,7 @@ const Tab = createBottomTabNavigator();
 const ICON: Record<string, string> = { Tugas: 'list', Chat: 'chatbubble-ellipses', Profil: 'person' };
 
 export default function CourierTabs() {
+  const theme = useTheme();
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({

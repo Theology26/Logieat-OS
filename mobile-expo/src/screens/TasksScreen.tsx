@@ -2,11 +2,14 @@ import { useCallback, useState } from 'react';
 import { View, Text, FlatList, StyleSheet, RefreshControl, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
-import { theme, riskColor } from '../theme';
+import { useTheme } from '../lib/theme-context';
+import { riskColor, type Theme } from '../theme';
 import { api, ApiError } from '../lib/api';
 import { PrimaryButton } from '../components/Buttons';
 
 export default function TasksScreen({ navigation }: any) {
+  const theme = useTheme();
+  const s = makeStyles(theme);
   const [data, setData] = useState<{ route: any; stops: any[] } | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -43,9 +46,9 @@ export default function TasksScreen({ navigation }: any) {
 
       {route && (
         <View style={s.summary}>
-          <Summary label="Stop" value={`${stops.length}`} />
-          <Summary label="Jarak" value={`${route.total_distance_km ?? '–'} km`} />
-          <Summary label="Estimasi" value={`${Math.round(route.total_time_minutes ?? 0)} min`} />
+          <Summary label="Stop" value={`${stops.length}`} s={s} />
+          <Summary label="Jarak" value={`${route.total_distance_km ?? '–'} km`} s={s} />
+          <Summary label="Estimasi" value={`${Math.round(route.total_time_minutes ?? 0)} min`} s={s} />
         </View>
       )}
 
@@ -62,7 +65,7 @@ export default function TasksScreen({ navigation }: any) {
               <Text style={s.emptyText}>{error ?? 'Tidak ada tugas. Tarik untuk menyegarkan.'}</Text>
             </View>
           }
-          renderItem={({ item }) => <StopCard stop={item} />}
+          renderItem={({ item }) => <StopCard stop={item} s={s} theme={theme} />}
         />
       )}
 
@@ -75,7 +78,7 @@ export default function TasksScreen({ navigation }: any) {
   );
 }
 
-function Summary({ label, value }: { label: string; value: string }) {
+function Summary({ label, value, s }: { label: string; value: string; s: any }) {
   return (
     <View style={{ flex: 1 }}>
       <Text style={s.sumLabel}>{label}</Text>
@@ -84,8 +87,9 @@ function Summary({ label, value }: { label: string; value: string }) {
   );
 }
 
-function StopCard({ stop }: { stop: any }) {
+function StopCard({ stop, s, theme }: { stop: any; s: any; theme: Theme }) {
   const o = stop.order;
+  const rc = riskColor(stop.spoilage_risk, theme);
   return (
     <View style={s.card}>
       <Text style={s.seq}>{stop.sequence}</Text>
@@ -94,9 +98,9 @@ function StopCard({ stop }: { stop: any }) {
         <Text style={s.meta}>{o.code} · {o.menu_name} · {o.quantity} pax</Text>
       </View>
       <View style={{ alignItems: 'flex-end', gap: 4 }}>
-        <View style={[s.chip, { backgroundColor: riskColor(stop.spoilage_risk) + '28' }]}>
-          <View style={[s.dot, { backgroundColor: riskColor(stop.spoilage_risk) }]} />
-          <Text style={[s.chipText, { color: riskColor(stop.spoilage_risk) }]}>{stop.spoilage_risk}</Text>
+        <View style={[s.chip, { backgroundColor: rc + '28' }]}>
+          <View style={[s.dot, { backgroundColor: rc }]} />
+          <Text style={[s.chipText, { color: rc }]}>{stop.spoilage_risk}</Text>
         </View>
         <Text style={s.eta}>ETA {Math.round(stop.estimated_minutes ?? 0)}m</Text>
       </View>
@@ -104,7 +108,7 @@ function StopCard({ stop }: { stop: any }) {
   );
 }
 
-const s = StyleSheet.create({
+const makeStyles = (theme: Theme) => StyleSheet.create({
   root: { flex: 1, backgroundColor: theme.color.bg },
   header: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 20, paddingVertical: 14 },
   title: { color: theme.color.ink, fontSize: 22, fontWeight: '600' },

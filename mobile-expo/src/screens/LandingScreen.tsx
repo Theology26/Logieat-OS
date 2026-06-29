@@ -3,7 +3,8 @@ import { View, Text, Pressable, StyleSheet, Animated, Easing } from 'react-nativ
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
-import { theme } from '../theme';
+import { useTheme } from '../lib/theme-context';
+import type { Theme } from '../theme';
 import { config } from '../lib/config';
 
 const isCatering = config.appRole === 'catering';
@@ -31,6 +32,8 @@ const COPY = isCatering
     };
 
 export default function LandingScreen({ navigation }: any) {
+  const theme = useTheme();
+  const s = makeStyles(theme);
   const fade = useRef(new Animated.Value(0)).current;
   const rise = useRef(new Animated.Value(28)).current;
 
@@ -88,7 +91,7 @@ export default function LandingScreen({ navigation }: any) {
   );
 }
 
-const s = StyleSheet.create({
+const makeStyles = (theme: Theme) => StyleSheet.create({
   root: { flex: 1, backgroundColor: theme.color.bg },
   glow: { position: 'absolute', top: -120, left: -60, right: -60, height: 420, borderRadius: 300 },
   safe: { flex: 1 },

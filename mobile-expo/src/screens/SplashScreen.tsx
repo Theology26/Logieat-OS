@@ -1,7 +1,10 @@
 import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
-import { theme } from '../theme';
+import { useTheme } from '../lib/theme-context';
+import type { Theme } from '../theme';
 
 export default function SplashScreen() {
+  const theme = useTheme();
+  const s = makeStyles(theme);
   return (
     <View style={s.root}>
       <View style={s.logo}>
@@ -15,7 +18,7 @@ export default function SplashScreen() {
   );
 }
 
-const s = StyleSheet.create({
+const makeStyles = (theme: Theme) => StyleSheet.create({
   root: { flex: 1, backgroundColor: theme.color.bg, alignItems: 'center', justifyContent: 'center' },
   logo: {
     width: 84, height: 84, borderRadius: 24, backgroundColor: theme.color.accent,

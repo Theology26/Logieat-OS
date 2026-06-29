@@ -1,9 +1,12 @@
 import { Pressable, Text, StyleSheet, ActivityIndicator, ViewStyle } from 'react-native';
-import { theme } from '../theme';
+import { useTheme } from '../lib/theme-context';
+import type { Theme } from '../theme';
 
 type PrimaryProps = { label: string; onPress?: () => void; loading?: boolean; disabled?: boolean; style?: ViewStyle };
 
 export function PrimaryButton({ label, onPress, loading, disabled, style }: PrimaryProps) {
+  const theme = useTheme();
+  const s = makeStyles(theme);
   return (
     <Pressable
       onPress={onPress}
@@ -22,6 +25,8 @@ export function PrimaryButton({ label, onPress, loading, disabled, style }: Prim
 }
 
 export function GhostButton({ label, onPress, style }: { label: string; onPress?: () => void; style?: ViewStyle }) {
+  const theme = useTheme();
+  const s = makeStyles(theme);
   return (
     <Pressable
       onPress={onPress}
@@ -32,7 +37,7 @@ export function GhostButton({ label, onPress, style }: { label: string; onPress?
   );
 }
 
-const s = StyleSheet.create({
+const makeStyles = (theme: Theme) => StyleSheet.create({
   btn: {
     height: theme.touch.primary, borderRadius: theme.radius.md, backgroundColor: theme.color.accent,
     alignItems: 'center', justifyContent: 'center', flexDirection: 'row', gap: 8,

@@ -19,6 +19,20 @@ type Claims struct {
 	Exp       int64  `json:"exp"`
 }
 
+// SignHS256 issues a JWT with the same shape Laravel and the verifier expect.
+func SignHS256(c Claims, secret string) (string, error) {
+	enc := func(b []byte) string { return base64.RawURLEncoding.EncodeToString(b) }
+	header := enc([]byte(`{"alg":"HS256","typ":"JWT"}`))
+	payload, err := json.Marshal(c)
+	if err != nil {
+		return "", err
+	}
+	signing := header + "." + enc(payload)
+	mac := hmac.New(sha256.New, []byte(secret))
+	mac.Write([]byte(signing))
+	return signing + "." + enc(mac.Sum(nil)), nil
+}
+
 // VerifyHS256 validates signature + expiry and returns the claims.
 func VerifyHS256(token, secret string) (*Claims, error) {
 	parts := strings.Split(token, ".")

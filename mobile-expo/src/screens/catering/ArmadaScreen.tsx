@@ -1,28 +1,37 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { View, Text, TextInput, Pressable, FlatList, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { WebView } from 'react-native-webview';
 import { useFocusEffect } from '@react-navigation/native';
-import { theme } from '../../theme';
+import { useTheme } from '../../lib/theme-context';
+import type { Theme } from '../../theme';
 import { api } from '../../lib/api';
 import { realtime } from '../../lib/ws';
 
-const MAP_HTML = `<!DOCTYPE html><html><head>
+// Live fleet map: courier markers updated from realtime GPS, depot pin from the API.
+function buildFleetMap(theme: Theme): string {
+  const c = theme.color;
+  const tiles = theme.mode === 'dark' ? 'dark_all' : 'light_all';
+  return `<!DOCTYPE html><html><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
 <link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet">
-<style>html,body,#map{height:100%;margin:0;background:#000}
-.pin{width:24px;height:24px;border-radius:50%;border:2px solid #000;box-shadow:0 0 0 4px rgba(232,181,74,.3)}</style>
+<style>html,body,#map{height:100%;margin:0;background:${c.bg}}
+.pin{width:24px;height:24px;border-radius:50%;border:2px solid #000;box-shadow:0 0 0 4px ${c.accentSub}}</style>
 </head><body><div id="map"></div><script>
-var map=new maplibregl.Map({container:'map',style:{version:8,sources:{c:{type:'raster',tiles:['https://a.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png','https://b.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png'],tileSize:256}},layers:[{id:'c',type:'raster',source:'c'}]},center:[106.84,-6.2],zoom:12,attributionControl:false});
+var map=new maplibregl.Map({container:'map',style:{version:8,sources:{c:{type:'raster',tiles:['https://a.basemaps.cartocdn.com/${tiles}/{z}/{x}/{y}.png','https://b.basemaps.cartocdn.com/${tiles}/{z}/{x}/{y}.png'],tileSize:256}},layers:[{id:'c',type:'raster',source:'c'}]},center:[106.84,-6.2],zoom:12,attributionControl:false});
 var M={};
 function dot(color){var e=document.createElement('div');e.className='pin';e.style.background=color;return e;}
-function updateCourier(id,lng,lat,name){ if(!M[id]){var e=dot('#e8b54a');e.title=name||'';M[id]=new maplibregl.Marker({element:e});M[id].setLngLat([lng,lat]).addTo(map);} else {M[id].setLngLat([lng,lat]);} }
-function init(d){ if(d.depot&&d.depot.lat){var e=document.createElement('div');e.className='pin';e.style.cssText='width:16px;height:16px;border-radius:50%;background:#ffd277;border:2px solid #000';new maplibregl.Marker({element:e}).setLngLat([d.depot.lng,d.depot.lat]).addTo(map);map.setCenter([d.depot.lng,d.depot.lat]);}
+function updateCourier(id,lng,lat,name){ if(!M[id]){var e=dot('${c.accent}');e.title=name||'';M[id]=new maplibregl.Marker({element:e});M[id].setLngLat([lng,lat]).addTo(map);} else {M[id].setLngLat([lng,lat]);} }
+function init(d){ if(d.depot&&d.depot.lat){var e=document.createElement('div');e.className='pin';e.style.cssText='width:16px;height:16px;border-radius:50%;background:${c.accentT};border:2px solid #000';new maplibregl.Marker({element:e}).setLngLat([d.depot.lng,d.depot.lat]).addTo(map);map.setCenter([d.depot.lng,d.depot.lat]);}
   (d.locations||[]).forEach(function(l){updateCourier(l.courier_id,l.longitude,l.latitude,(d.names||{})[l.courier_id]);}); }
 </script></body></html>`;
+}
 
 export default function ArmadaScreen() {
+  const theme = useTheme();
+  const s = makeStyles(theme);
+  const mapSource = useMemo(() => ({ html: buildFleetMap(theme) }), [theme]);
   const web = useRef<WebView>(null);
   const dataRef = useRef<any>(null);
   const namesRef = useRef<Record<string, string>>({});
@@ -66,8 +75,8 @@ export default function ArmadaScreen() {
         <WebView
           ref={web}
           originWhitelist={['*']}
-          source={{ html: MAP_HTML }}
-          style={{ flex: 1, backgroundColor: '#000' }}
+          source={mapSource}
+          style={{ flex: 1, backgroundColor: theme.color.bg }}
           javaScriptEnabled
           onLoadEnd={() => dataRef.current && web.current?.injectJavaScript(`init(${JSON.stringify(dataRef.current)});true;`)}
         />
@@ -92,7 +101,7 @@ export default function ArmadaScreen() {
   );
 }
 
-const s = StyleSheet.create({
+const makeStyles = (theme: Theme) => StyleSheet.create({
   root: { flex: 1, backgroundColor: theme.color.bg },
   title: { color: theme.color.ink, fontSize: 22, fontWeight: '600', padding: 16, paddingBottom: 10 },
   mapWrap: { flex: 1, marginHorizontal: 12, borderRadius: theme.radius.xs, overflow: 'hidden', borderWidth: 1, borderColor: theme.color.line },

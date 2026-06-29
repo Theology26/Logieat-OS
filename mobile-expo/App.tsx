@@ -14,17 +14,25 @@ import { api, getToken } from './src/lib/api';
 import { realtime } from './src/lib/ws';
 import { config } from './src/lib/config';
 import { setupNotifications, registerForPush, showLocal } from './src/lib/push';
-import { theme } from './src/theme';
+import { ThemeProvider, useTheme } from './src/lib/theme-context';
 
 const Stack = createNativeStackNavigator();
 const isCatering = config.appRole === 'catering';
 
-const navTheme = {
-  ...DefaultTheme,
-  colors: { ...DefaultTheme.colors, background: theme.color.bg, card: theme.color.bg, text: theme.color.ink, border: theme.color.line, primary: theme.color.accent },
-};
-
 export default function App() {
+  return (
+    <ThemeProvider>
+      <Root />
+    </ThemeProvider>
+  );
+}
+
+function Root() {
+  const theme = useTheme();
+  const navTheme = {
+    ...DefaultTheme,
+    colors: { ...DefaultTheme.colors, background: theme.color.bg, card: theme.color.bg, text: theme.color.ink, border: theme.color.line, primary: theme.color.accent },
+  };
   const [booted, setBooted] = useState(false);
   const [signedIn, setSignedIn] = useState(false);
 
@@ -55,7 +63,7 @@ export default function App() {
 
   return (
     <SafeAreaProvider>
-      <StatusBar style="light" />
+      <StatusBar style={theme.mode === 'dark' ? 'light' : 'dark'} />
       <NavigationContainer theme={navTheme}>
         <Stack.Navigator
           initialRouteName={signedIn ? 'Main' : 'Landing'}

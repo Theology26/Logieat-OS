@@ -1,7 +1,5 @@
 """
-============================================================================
 MBG Smart Logistics — AI Microservice v2 (Production)
-============================================================================
 Overhaul:
   - Spoilage-aware routing: makanan cepat basi DIDAHULUKAN
   - Temperature-adjusted urgency: cuaca panas = makin urgent
@@ -9,7 +7,6 @@ Overhaul:
     fallback ke heuristic yang tetap pintar
   - Richer response: spoilage risk, distance, eta per sekolah
   - Epsilon system terintegrasi ke routing decision
-============================================================================
 """
 
 import base64
@@ -35,9 +32,7 @@ from pydantic import BaseModel, Field
 from PIL import Image
 from io import BytesIO
 
-# ============================================================================
 # Logging
-# ============================================================================
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(message)s",
@@ -45,9 +40,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger("mbg-ai")
 
-# ============================================================================
 # Config
-# ============================================================================
 load_dotenv()
 NVIDIA_API_KEY = os.getenv("NVIDIA_API_KEY", "")
 LLAMA_VISION_MODEL = os.getenv("LLAMA_VISION_MODEL", "meta/llama-3.2-11b-vision-instruct")
@@ -57,9 +50,7 @@ WEIGHTS_PATH = os.getenv("A2C_WEIGHTS_PATH", "a2c_best.pth")
 MAX_SCHOOLS = 50
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-# ============================================================================
 # Spoilage Physics Constants
-# ============================================================================
 # Q10 model: setiap kenaikan 10°C, laju kerusakan makanan naik 2x
 Q10_FACTOR = 2.0
 REFERENCE_TEMP_C = 25.0  # suhu referensi baseline
@@ -89,9 +80,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# ============================================================================
 # Pydantic Schemas
-# ============================================================================
 
 class Ingredient(BaseModel):
     name: str
@@ -166,9 +155,7 @@ class RouteOptimizeResponse(BaseModel):
     device: str
     inference_time_ms: float
 
-# ============================================================================
 # A2C Network (harus sama dengan train_a2c.py)
-# ============================================================================
 
 SCHOOL_FEATURES = 5
 GLOBAL_FEATURES = 4
@@ -213,9 +200,7 @@ class CriticNetwork(nn.Module):
         return self.net(x).squeeze(-1)
 
 
-# ============================================================================
 # Haversine
-# ============================================================================
 
 def haversine_km(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
     R = 6371.0
@@ -230,9 +215,7 @@ def haversine_minutes(lat1: float, lon1: float, lat2: float, lon2: float) -> flo
     return (haversine_km(lat1, lon1, lat2, lon2) / SPEED_KMH) * 60.0
 
 
-# ============================================================================
 # Spoilage Calculator (Q10 Model)
-# ============================================================================
 
 def calc_spoilage_minutes(food_category: Optional[str], temperature_c: float,
                           base_category: Optional[str] = None) -> float:
@@ -277,9 +260,7 @@ def _category_epsilon_fallback(menu_name: str):
     return "Kering", 0.2
 
 
-# ============================================================================
 # A2C Agent (Inference Only)
-# ============================================================================
 
 class A2CAgent:
     def __init__(self):
@@ -488,9 +469,7 @@ class A2CAgent:
 
 _agent = A2CAgent()
 
-# ============================================================================
 # NIM Helpers
-# ============================================================================
 
 def _nim_headers():
     if not NVIDIA_API_KEY:
@@ -521,9 +500,7 @@ def _parse_json_blob(text: str) -> dict:
     return json.loads(match.group(1))
 
 
-# ============================================================================
 # Vision Endpoint
-# ============================================================================
 
 @app.post("/vision/analyze/", response_model=LlamaVisionResponse)
 def analyze_receipt(
@@ -601,9 +578,7 @@ def analyze_receipt(
         }
         return mock_data
 
-# ============================================================================
 # Nemotron Endpoints
-# ============================================================================
 
 @app.post("/decision/calculate-epsilon", response_model=EpsilonResponse)
 def calculate_epsilon(body: EpsilonRequest,
@@ -663,9 +638,7 @@ def suggest_menu(body: MenuSuggestRequest,
             inference_time_ms=round((time.time() - start) * 1000, 2),
         )
 
-# ============================================================================
 # Routing Endpoint
-# ============================================================================
 
 @app.post("/routing/optimize", response_model=RouteOptimizeResponse)
 def optimize_route(request: RouteOptimizeRequest):
@@ -698,9 +671,7 @@ def optimize_route(request: RouteOptimizeRequest):
 
     return result
 
-# ============================================================================
 # Health Check
-# ============================================================================
 
 @app.get("/health")
 def health_check():

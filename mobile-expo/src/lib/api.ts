@@ -1,5 +1,4 @@
-// Typed API client for LogiEat OS. Matches docs/API.md (Phase 1 endpoints).
-// Token persisted in Expo SecureStore; attached as Bearer on every request.
+// Typed API client. JWT is kept in SecureStore and sent as a Bearer header.
 import * as SecureStore from 'expo-secure-store';
 import { config } from './config';
 
@@ -40,7 +39,7 @@ async function request<T>(path: string, options: RequestInit = {}, auth = true):
   return body as T;
 }
 
-// POST to the Go core service (dispatch bridge), with the same Bearer token.
+// Calls the Go core service (dispatch bridge) with the same Bearer token.
 async function coreRequest<T>(path: string, body: unknown): Promise<T> {
   const token = await getToken();
   const res = await fetch(`${config.coreUrl}${path}`, {
@@ -53,7 +52,6 @@ async function coreRequest<T>(path: string, body: unknown): Promise<T> {
   return b as T;
 }
 
-// ── Auth (docs/API.md §3) ──────────────────────────────────────
 export const api = {
   registerOwner: (data: Record<string, unknown>) =>
     request<{ token: string; user: any; company: any; next: string }>(
@@ -100,7 +98,7 @@ export const api = {
   startRoute: (routeId: string) => request(`/courier/routes/${routeId}/start`, { method: 'POST' }),
   completeRoute: (routeId: string) => request(`/courier/routes/${routeId}/complete`, { method: 'POST' }),
 
-  // PoD photo upload (multipart — don't set Content-Type, let fetch add the boundary)
+  // Proof-of-delivery upload. Let fetch set the multipart boundary itself.
   deliverStop: async (assignmentId: string, photoUri: string, lat?: number, lng?: number) => {
     const token = await getToken();
     const form = new FormData();

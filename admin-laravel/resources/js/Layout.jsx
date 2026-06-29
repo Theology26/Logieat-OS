@@ -1,4 +1,5 @@
 import { Link, usePage, router } from '@inertiajs/react';
+import ThemeSwitch from './ThemeSwitch';
 
 const NAV = [
     ['dashboard', 'Beranda', '/dashboard'],
@@ -31,6 +32,7 @@ export default function Layout({ active, children }) {
                 ))}
                 <div className="ml-auto flex items-center gap-4 text-sm text-ink2">
                     <span>{auth?.company?.name}</span>
+                    <ThemeSwitch />
                     <button onClick={() => router.post('/logout')} className="hover:text-danger transition">
                         Keluar
                     </button>

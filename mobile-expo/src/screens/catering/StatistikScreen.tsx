@@ -2,12 +2,16 @@ import { useCallback, useState } from 'react';
 import { View, Text, ScrollView, StyleSheet, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
-import { theme } from '../../theme';
+import { useTheme } from '../../lib/theme-context';
+import type { Theme } from '../../theme';
 import { api } from '../../lib/api';
+import ThemeToggle from '../../components/ThemeToggle';
 
 const rp = (v: number) => 'Rp ' + Number(v).toLocaleString('id-ID');
 
 export default function StatistikScreen() {
+  const theme = useTheme();
+  const s = makeStyles(theme);
   const [d, setD] = useState<any>(null);
   useFocusEffect(useCallback(() => { api.analytics().then(setD).catch(() => {}); }, []));
 
@@ -21,15 +25,18 @@ export default function StatistikScreen() {
   return (
     <SafeAreaView style={s.root} edges={['top']}>
       <ScrollView contentContainerStyle={{ padding: 16, paddingBottom: 90 }}>
-        <Text style={s.title}>Statistik</Text>
+        <View style={s.header}>
+          <Text style={s.title}>Statistik</Text>
+          <ThemeToggle />
+        </View>
         <View style={s.kpis}>
-          <Kpi l="Penjualan Hari Ini" v={rp(k.sales_today)} />
-          <Kpi l="Pesanan Hari Ini" v={String(k.orders_today)} />
-          <Kpi l="Total Terkirim" v={String(k.deliveries)} />
-          <Kpi l="On-Time" v={k.on_time_pct + '%'} />
+          <Kpi s={s} l="Penjualan Hari Ini" v={rp(k.sales_today)} />
+          <Kpi s={s} l="Pesanan Hari Ini" v={String(k.orders_today)} />
+          <Kpi s={s} l="Total Terkirim" v={String(k.deliveries)} />
+          <Kpi s={s} l="On-Time" v={k.on_time_pct + '%'} />
         </View>
 
-        <Card title="Tren Penjualan · 12 Bulan">
+        <Card s={s} title="Tren Penjualan · 12 Bulan">
           <View style={s.bars}>
             {months.map((m, i) => (
               <View key={i} style={s.barCol}>
@@ -39,7 +46,7 @@ export default function StatistikScreen() {
           </View>
         </Card>
 
-        <Card title="Rekap Kurir · jarak tempuh">
+        <Card s={s} title="Rekap Kurir · jarak tempuh">
           {d.couriers.length === 0 ? <Text style={s.muted}>Belum ada data kurir.</Text> :
             d.couriers.map((c: any, i: number) => (
               <View key={i} style={s.kmRow}>
@@ -54,16 +61,17 @@ export default function StatistikScreen() {
   );
 }
 
-function Kpi({ l, v }: { l: string; v: string }) {
+function Kpi({ l, v, s }: { l: string; v: string; s: any }) {
   return <View style={s.kpi}><Text style={s.kpiL}>{l}</Text><Text style={s.kpiV}>{v}</Text></View>;
 }
-function Card({ title, children }: any) {
+function Card({ title, children, s }: any) {
   return <View style={s.card}><Text style={s.cardT}>{title}</Text>{children}</View>;
 }
 
-const s = StyleSheet.create({
+const makeStyles = (theme: Theme) => StyleSheet.create({
   root: { flex: 1, backgroundColor: theme.color.bg },
-  title: { color: theme.color.ink, fontSize: 22, fontWeight: '600', marginBottom: 14 },
+  header: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 },
+  title: { color: theme.color.ink, fontSize: 22, fontWeight: '600' },
   kpis: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
   kpi: { width: '47.8%', backgroundColor: theme.color.raised, borderWidth: 1, borderColor: theme.color.line, borderRadius: theme.radius.xs, padding: 14 },
   kpiL: { color: theme.color.ink2, fontSize: 10, textTransform: 'uppercase', letterSpacing: 0.4, fontWeight: '600' },

@@ -1,4 +1,5 @@
 import { useForm, Head } from '@inertiajs/react';
+import ThemeSwitch from '../ThemeSwitch';
 
 export default function Login() {
     const { data, setData, post, processing, errors } = useForm({ email: '', password: '' });
@@ -11,6 +12,9 @@ export default function Login() {
     return (
         <div className="min-h-screen grid place-items-center bg-bg px-4">
             <Head title="Masuk" />
+            <div className="absolute top-5 right-5">
+                <ThemeSwitch />
+            </div>
             <form onSubmit={submit} className="w-[360px] bg-card border border-line rounded-2xl p-7">
                 <div className="text-accentt font-semibold text-sm">LogiEat OS</div>
                 <h1 className="text-2xl font-semibold mt-1">Masuk</h1>

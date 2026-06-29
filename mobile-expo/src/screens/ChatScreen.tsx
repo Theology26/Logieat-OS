@@ -1,10 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
 import { View, Text, TextInput, Pressable, FlatList, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { theme } from '../theme';
+import { useTheme } from '../lib/theme-context';
+import type { Theme } from '../theme';
 import { realtime } from '../lib/ws';
 
 export default function ChatScreen({ navigation, route }: any) {
+  const theme = useTheme();
+  const s = makeStyles(theme);
   const routeId = route.params?.routeId;
   const [messages, setMessages] = useState<any[]>([]);
   const [text, setText] = useState('');
@@ -71,7 +74,7 @@ export default function ChatScreen({ navigation, route }: any) {
   );
 }
 
-const s = StyleSheet.create({
+const makeStyles = (theme: Theme) => StyleSheet.create({
   root: { flex: 1, backgroundColor: theme.color.bg },
   header: { flexDirection: 'row', alignItems: 'center', gap: 12, paddingHorizontal: 16, paddingVertical: 12, borderBottomWidth: 1, borderColor: theme.color.line },
   back: { color: theme.color.ink, fontSize: 20 },

@@ -2,22 +2,24 @@ package server
 
 import "net/http"
 
-// routes registers all HTTP handlers. Go 1.22+ method-pattern routing (stdlib).
 func (s *Server) routes(mux *http.ServeMux) {
 	mux.HandleFunc("GET /healthz", s.handleHealth)
 
-	// --- Phase 2: AI dispatch bridge (→ app.py /routing/optimize) ---
-	mux.HandleFunc("POST /dispatch/optimize", s.tenant(s.handleOptimize)) // preview
-	mux.HandleFunc("POST /dispatch/assign", s.tenant(s.handleAssign))     // persist + notify
+	// AI dispatch bridge to app.py
+	mux.HandleFunc("POST /dispatch/optimize", s.tenant(s.handleOptimize))
+	mux.HandleFunc("POST /dispatch/assign", s.tenant(s.handleAssign))
 
-	// --- Phase 3: realtime ---
-	mux.HandleFunc("GET /ws", s.handleWS) // auth via ?token= inside the handler
+	// Realtime fleet GPS, chat and notifications (auth via ?token=)
+	mux.HandleFunc("GET /ws", s.handleWS)
 
-	// --- Phase 3: courier execution (also handled by Laravel today) ---
-	// mux.HandleFunc("POST /gps",                        s.tenant(s.handleGPS))
-	// mux.HandleFunc("POST /assignments/{id}/pickup",    s.tenant(s.handlePickup))
-	// mux.HandleFunc("POST /assignments/{id}/arrive",    s.tenant(s.handleArrive))
-	// mux.HandleFunc("POST /assignments/{id}/deliver",   s.tenant(s.handleDeliver))
-	// mux.HandleFunc("POST /assignments/{id}/complete",  s.tenant(s.handleComplete))
-	// mux.HandleFunc("POST /chat/messages",              s.tenant(s.handleChat))
+	// REST API consumed by the React web client
+	mux.HandleFunc("POST /api/auth/login", s.handleLogin)
+	mux.HandleFunc("GET /api/me", s.tenant(s.handleMe))
+	mux.HandleFunc("GET /api/orders", s.tenant(s.handleOrders))
+	mux.HandleFunc("POST /api/orders", s.tenant(s.handleCreateOrder))
+	mux.HandleFunc("GET /api/couriers", s.tenant(s.handleCouriers))
+	mux.HandleFunc("GET /api/analytics", s.tenant(s.handleAnalytics))
+	mux.HandleFunc("GET /api/fleet", s.tenant(s.handleFleet))
+	mux.HandleFunc("POST /api/dispatch/optimize", s.tenant(s.handleOptimize))
+	mux.HandleFunc("POST /api/dispatch/assign", s.tenant(s.handleAssign))
 }

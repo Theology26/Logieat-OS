@@ -34,7 +34,7 @@ type stepOut struct {
 	MinutesUntilSpoilage float64 `json:"minutes_until_spoilage"`
 }
 
-// optimizeFor maps orders → SchoolNodes, calls app.py, and returns the response
+// optimizeFor maps orders SchoolNodes, calls app.py, and returns the response
 // plus the orders indexed by the integer id we sent (1..N).
 func (s *Server) optimizeFor(r *http.Request, body dispatchBody) (*ai.RouteOptimizeResponse, []store.Order, *store.Depot, error) {
 	ctx := r.Context()

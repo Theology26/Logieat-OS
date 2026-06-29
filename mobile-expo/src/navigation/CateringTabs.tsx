@@ -1,6 +1,6 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
-import { theme } from '../theme';
+import { useTheme } from '../lib/theme-context';
 import DispatchScreen from '../screens/catering/DispatchScreen';
 import PesananScreen from '../screens/catering/PesananScreen';
 import ArmadaScreen from '../screens/catering/ArmadaScreen';
@@ -13,6 +13,7 @@ const ICON: Record<string, string> = {
 };
 
 export default function CateringTabs() {
+  const theme = useTheme();
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({

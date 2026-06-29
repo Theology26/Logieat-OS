@@ -4,10 +4,13 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import * as ImageManipulator from 'expo-image-manipulator';
 import * as Location from 'expo-location';
-import { theme } from '../theme';
+import { useTheme } from '../lib/theme-context';
+import type { Theme } from '../theme';
 import { api, ApiError } from '../lib/api';
 
 export default function PodCameraScreen({ navigation, route }: any) {
+  const theme = useTheme();
+  const s = makeStyles(theme);
   const { assignmentId, recipient } = route.params;
   const [permission, requestPermission] = useCameraPermissions();
   const cameraRef = useRef<CameraView>(null);
@@ -97,7 +100,7 @@ export default function PodCameraScreen({ navigation, route }: any) {
   );
 }
 
-const s = StyleSheet.create({
+const makeStyles = (theme: Theme) => StyleSheet.create({
   root: { flex: 1, backgroundColor: '#050505' },
   center: { flex: 1, backgroundColor: theme.color.bg, alignItems: 'center', justifyContent: 'center', gap: 16, padding: 24 },
   info: { color: theme.color.ink2, textAlign: 'center', fontSize: 14 },

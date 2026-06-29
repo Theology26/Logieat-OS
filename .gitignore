@@ -46,3 +46,17 @@ design.md
 **/CLAUDE.md
 **/AGENTS.md
 mobile-expo/app-example/
+
+# materi tambahan — JANGAN masuk git (hanya sistem inti yang di-track)
+# pipeline + aset video iklan & tutorial
+ad/
+# video & audio hasil render
+*.mp4
+*.mov
+*.wav
+# diagram / grafik (svg + png + sumber html) untuk laporan
+docs/diagrams/
+docs/diagrams.html
+# temp/log dari menjalankan service
+.tmp_*
+*.tmp

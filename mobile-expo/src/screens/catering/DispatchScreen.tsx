@@ -2,11 +2,15 @@ import { useCallback, useState } from 'react';
 import { View, Text, FlatList, Pressable, ScrollView, StyleSheet, ActivityIndicator, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
-import { theme, riskColor } from '../../theme';
+import { useTheme } from '../../lib/theme-context';
+import { riskColor, type Theme } from '../../theme';
 import { api, ApiError } from '../../lib/api';
 import { PrimaryButton } from '../../components/Buttons';
+import ThemeToggle from '../../components/ThemeToggle';
 
 export default function DispatchScreen() {
+  const theme = useTheme();
+  const s = makeStyles(theme);
   const [orders, setOrders] = useState<any[]>([]);
   const [couriers, setCouriers] = useState<any[]>([]);
   const [courierId, setCourierId] = useState('');
@@ -47,8 +51,13 @@ export default function DispatchScreen() {
 
   return (
     <SafeAreaView style={s.root} edges={['top']}>
-      <Text style={s.title}>Dispatcher</Text>
-      <Text style={s.sub}>Pilih kurir & pesanan, AI susun rutenya.</Text>
+      <View style={s.headRow}>
+        <View style={{ flex: 1 }}>
+          <Text style={s.title}>Dispatcher</Text>
+          <Text style={s.sub}>Pilih kurir & pesanan, AI susun rutenya.</Text>
+        </View>
+        <ThemeToggle />
+      </View>
 
       {loading ? <ActivityIndicator color={theme.color.accentT} style={{ marginTop: 40 }} /> : (
         <FlatList
@@ -89,7 +98,7 @@ export default function DispatchScreen() {
                     <Text style={s.seq}>{r.sequence}</Text>
                     <Text style={{ flex: 1, color: theme.color.ink }}>{r.code} {r.recipient}</Text>
                     <Text style={s.stepMeta}>{r.distance_km}km · {Math.round(r.estimated_minutes)}m</Text>
-                    <View style={[s.dot, { backgroundColor: riskColor(r.spoilage_risk) }]} />
+                    <View style={[s.dot, { backgroundColor: riskColor(r.spoilage_risk, theme) }]} />
                   </View>
                 ))}
                 <Text style={s.total}>{result.total_distance_km}km · {Math.round(result.total_time_minutes)}m · {result.route.length} stop</Text>
@@ -109,10 +118,11 @@ export default function DispatchScreen() {
   );
 }
 
-const s = StyleSheet.create({
+const makeStyles = (theme: Theme) => StyleSheet.create({
   root: { flex: 1, backgroundColor: theme.color.bg },
-  title: { color: theme.color.ink, fontSize: 22, fontWeight: '600', paddingHorizontal: 20, paddingTop: 16 },
-  sub: { color: theme.color.ink2, fontSize: 13, paddingHorizontal: 20, marginTop: 2, marginBottom: 6 },
+  headRow: { flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between', paddingHorizontal: 20, paddingTop: 16, paddingBottom: 6, gap: 12 },
+  title: { color: theme.color.ink, fontSize: 22, fontWeight: '600' },
+  sub: { color: theme.color.ink2, fontSize: 13, marginTop: 2 },
   lbl: { color: theme.color.ink2, fontSize: 12, textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 8, fontWeight: '600' },
   muted: { color: theme.color.ink2, fontSize: 13 },
   chip: { paddingHorizontal: 16, height: 38, borderRadius: theme.radius.md, borderWidth: 1, borderColor: theme.color.line2, alignItems: 'center', justifyContent: 'center', marginRight: 8 },

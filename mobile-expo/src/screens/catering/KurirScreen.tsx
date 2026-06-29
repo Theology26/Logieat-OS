@@ -2,10 +2,13 @@ import { useCallback, useState } from 'react';
 import { View, Text, FlatList, Pressable, StyleSheet, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
-import { theme } from '../../theme';
+import { useTheme } from '../../lib/theme-context';
+import type { Theme } from '../../theme';
 import { api } from '../../lib/api';
 
 export default function KurirScreen() {
+  const theme = useTheme();
+  const s = makeStyles(theme);
   const [couriers, setCouriers] = useState<any[]>([]);
   const [code, setCode] = useState('');
 
@@ -42,7 +45,7 @@ export default function KurirScreen() {
             {pending.length === 0 && <Text style={s.muted}>Tidak ada permintaan baru.</Text>}
             {pending.map((c) => (
               <View key={c.id} style={s.pcard}>
-                <Avatar name={c.name} />
+                <Avatar s={s} name={c.name} />
                 <View style={{ flex: 1 }}>
                   <Text style={s.name}>{c.name}</Text>
                   <Text style={s.meta}>{c.phone}{c.vehicle_plate ? ` · ${c.vehicle_plate}` : ''}</Text>
@@ -56,7 +59,7 @@ export default function KurirScreen() {
         }
         renderItem={({ item }) => (
           <View style={s.lcard}>
-            <Avatar name={item.name} />
+            <Avatar s={s} name={item.name} />
             <View style={{ flex: 1 }}><Text style={s.name}>{item.name}</Text><Text style={s.meta}>{item.phone}</Text></View>
             <Text style={[s.badge, item.status === 'active' && { color: theme.color.success }]}>{item.status}</Text>
           </View>
@@ -66,12 +69,12 @@ export default function KurirScreen() {
   );
 }
 
-function Avatar({ name }: { name: string }) {
+function Avatar({ name, s }: { name: string; s: any }) {
   const i = (name || '?').split(' ').map((w) => w[0]).slice(0, 2).join('').toUpperCase();
   return <View style={s.av}><Text style={s.avT}>{i}</Text></View>;
 }
 
-const s = StyleSheet.create({
+const makeStyles = (theme: Theme) => StyleSheet.create({
   root: { flex: 1, backgroundColor: theme.color.bg },
   title: { color: theme.color.ink, fontSize: 22, fontWeight: '600', marginBottom: 14 },
   codeCard: { backgroundColor: theme.color.raised, borderWidth: 1, borderColor: theme.color.line, borderRadius: theme.radius.xs, padding: 16 },

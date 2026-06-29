@@ -42,7 +42,7 @@ func (s *Server) Run() error {
 
 	httpSrv := &http.Server{
 		Addr:              addr,
-		Handler:           logging(s.log, mux),
+		Handler:           cors(logging(s.log, mux)),
 		ReadHeaderTimeout: 10 * time.Second,
 	}
 	return httpSrv.ListenAndServe()

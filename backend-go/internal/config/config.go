@@ -20,7 +20,7 @@ func Load() Config {
 		RedisURL:     env("REDIS_URL", "redis://127.0.0.1:6379"),
 		AIServiceURL: env("AI_SERVICE_URL", "http://127.0.0.1:9000"),
 		OSRMURL:      env("OSRM_URL", "http://127.0.0.1:5000"),
-		JWTSecret:    env("JWT_SECRET", "change-me-shared-with-laravel"),
+		JWTSecret:    env("JWT_SECRET", "logieat-dev-shared-secret-change-in-prod"), // must match Laravel
 	}
 }
 

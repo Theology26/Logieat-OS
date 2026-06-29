@@ -13,7 +13,7 @@ class AuthController extends Controller
 {
     public function __construct(private JwtService $jwt) {}
 
-    /** Owner registration → creates company + owner. Subscription activated separately. */
+    /** Owner registration creates company + owner. Subscription activated separately. */
     public function registerOwner(Request $request)
     {
         $data = $request->validate([
@@ -57,7 +57,7 @@ class AuthController extends Controller
         ], 201);
     }
 
-    /** Courier registration via Catering ID → created as 'pending' (awaits admin approval). */
+    /** Courier registration via Catering ID created as 'pending' (awaits admin approval). */
     public function registerCourier(Request $request)
     {
         $data = $request->validate([
@@ -92,7 +92,7 @@ class AuthController extends Controller
         ], 201);
     }
 
-    /** Email + password login → JWT. Pending couriers are blocked. */
+    /** Email + password login JWT. Pending couriers are blocked. */
     public function login(Request $request)
     {
         $data = $request->validate([

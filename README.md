@@ -16,6 +16,11 @@ secara live — semuanya dalam satu sistem yang terhubung.
 
 ---
 
+> 🎓 **Catatan UAS:** pemetaan fitur/kode ke Learning Outcome untuk **Web Programming (Laravel)**
+> dan **Popular Programming Technology (Go + React)** — lengkap dengan diagram (use case, class, ERD,
+> sequence) + outline PPT/laporan ada di **[`docs/UAS-NOTES.md`](docs/UAS-NOTES.md)**.
+> Front end Go+React ada di [`web-react/`](web-react/).
+
 ## ✨ Kenapa LogiEat OS?
 
 Katering besar punya masalah klasik: **puluhan kurir, ratusan pesanan, dan makanan yang
@@ -164,13 +169,15 @@ LogiEatOS/
 Python 3.11+, Android Studio (untuk build APK).
 
 ### 1. Siapkan database
-Buka Laragon → **Start All** → buka HeidiSQL → buat database **`logieat`** (utf8mb4).
+Buka Laragon → **Start All** → buat database **`logieat`** (utf8mb4).
 ```bash
 cd admin-laravel
-cp .env.example .env          # set DB_DATABASE=logieat
+cp .env.example .env          # DB_DATABASE=logieat, JWT_SECRET sama dengan backend-go/.env
 composer install && npm install && npm run build
-php artisan migrate
+php artisan migrate --seed    # buat skema + akun demo + pesanan contoh
 ```
+> `JWT_SECRET` di `admin-laravel/.env` dan `backend-go/.env` **wajib sama**, kalau tidak
+> Go core menolak token Laravel (dispatch & realtime mati).
 
 ### 2. Jalankan semua server (1 klik)
 ```
@@ -182,10 +189,12 @@ agar HP bisa akses). Pastikan MySQL Laragon sudah *Start All*.
 ### 3. Mobile (Expo)
 ```bash
 cd mobile-expo && npm install
-# atur EXPO_PUBLIC_API_URL di .env ke IP LAN PC kamu (mis. http://192.168.1.10:8001/api)
 npx expo start -c                                  # App Kurir
 EXPO_PUBLIC_APP_ROLE=catering npx expo start -c    # App Manager
 ```
+> **IP server otomatis.** Saat dev (Expo Go / dev client) app mengikuti host Metro.
+> Untuk APK release, IP LAN PC dibakar otomatis saat build (`app.config.js`), jadi
+> tidak perlu mengedit IP manual. Override opsional via `EXPO_PUBLIC_API_URL`.
 
 ### 4. Build APK
 ```bash
@@ -193,17 +202,19 @@ cd mobile-expo
 npx expo prebuild -p android --clean && (cd android && ./gradlew assembleRelease)         # Kurir
 EXPO_PUBLIC_APP_ROLE=catering npx expo prebuild -p android --clean && (cd android && ./gradlew assembleRelease)  # Manager
 ```
+APK ada di `android/app/build/outputs/apk/release/`. HTTP cleartext sudah diizinkan
+(`expo-build-properties`) agar APK bisa konek ke backend `http://` di LAN.
 
 ---
 
 ## 🔑 Akun Demo
 
+Dibuat oleh `php artisan db:seed` (Catering ID: `DAP-DEMO01`):
+
 | App | Peran | Email | Password |
 |---|---|---|---|
-| Manager | Owner (Katering Sehat) | `joko@sehat.id` | `secret123` |
-| Manager | Owner (Dapur Bahagia) | `owner@bahagia.id` | `secret123` |
-| Kurir | Kurir (Katering Sehat) | `joni@sehat.id` | `secret1` |
-| Kurir | Kurir (Dapur Bahagia) | `budi@x.id` | `secret1` |
+| Manager | Owner (Dapur Bahagia) | `owner@bahagia.id` | `password` |
+| Kurir | Kurir (Dapur Bahagia) | `budi@bahagia.id` | `password` |
 
 ---
 

@@ -2,7 +2,8 @@ import { useCallback, useState } from 'react';
 import { View, Text, TextInput, FlatList, Pressable, StyleSheet, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
-import { theme } from '../../theme';
+import { useTheme } from '../../lib/theme-context';
+import type { Theme } from '../../theme';
 import { api, ApiError } from '../../lib/api';
 import { PrimaryButton } from '../../components/Buttons';
 
@@ -10,6 +11,8 @@ const CATS = ['Santan', 'Basah', 'Kering'];
 const blank = { recipient_name: '', menu_name: '', food_category: 'Basah', quantity: '1', price: '', address: '', latitude: '', longitude: '' };
 
 export default function PesananScreen() {
+  const theme = useTheme();
+  const s = makeStyles(theme);
   const [orders, setOrders] = useState<any[]>([]);
   const [f, setF] = useState({ ...blank });
   const [busy, setBusy] = useState(false);
@@ -41,8 +44,8 @@ export default function PesananScreen() {
             <Text style={s.title}>Pesanan</Text>
             <View style={s.form}>
               <Text style={s.formTitle}>+ Tambah Pesanan</Text>
-              <Inp ph="Penerima" v={f.recipient_name} on={(v: string) => set('recipient_name', v)} />
-              <Inp ph="Menu" v={f.menu_name} on={(v: string) => set('menu_name', v)} />
+              <Inp s={s} phc={theme.color.ink2} ph="Penerima" v={f.recipient_name} on={(v: string) => set('recipient_name', v)} />
+              <Inp s={s} phc={theme.color.ink2} ph="Menu" v={f.menu_name} on={(v: string) => set('menu_name', v)} />
               <View style={s.cats}>
                 {CATS.map((c) => (
                   <Pressable key={c} onPress={() => set('food_category', c)} style={[s.cat, f.food_category === c && s.catOn]}>
@@ -51,13 +54,13 @@ export default function PesananScreen() {
                 ))}
               </View>
               <View style={s.row2}>
-                <Inp ph="Jumlah (pax)" v={f.quantity} on={(v: string) => set('quantity', v)} kt="number-pad" flex />
-                <Inp ph="Harga (Rp)" v={f.price} on={(v: string) => set('price', v)} kt="number-pad" flex />
+                <Inp s={s} phc={theme.color.ink2} ph="Jumlah (pax)" v={f.quantity} on={(v: string) => set('quantity', v)} kt="number-pad" flex />
+                <Inp s={s} phc={theme.color.ink2} ph="Harga (Rp)" v={f.price} on={(v: string) => set('price', v)} kt="number-pad" flex />
               </View>
-              <Inp ph="Alamat" v={f.address} on={(v: string) => set('address', v)} />
+              <Inp s={s} phc={theme.color.ink2} ph="Alamat" v={f.address} on={(v: string) => set('address', v)} />
               <View style={s.row2}>
-                <Inp ph="Latitude" v={f.latitude} on={(v: string) => set('latitude', v)} kt="numbers-and-punctuation" flex />
-                <Inp ph="Longitude" v={f.longitude} on={(v: string) => set('longitude', v)} kt="numbers-and-punctuation" flex />
+                <Inp s={s} phc={theme.color.ink2} ph="Latitude" v={f.latitude} on={(v: string) => set('latitude', v)} kt="numbers-and-punctuation" flex />
+                <Inp s={s} phc={theme.color.ink2} ph="Longitude" v={f.longitude} on={(v: string) => set('longitude', v)} kt="numbers-and-punctuation" flex />
               </View>
               <PrimaryButton label="Simpan Pesanan" onPress={submit} loading={busy} style={{ marginTop: 12 }} />
             </View>
@@ -79,16 +82,16 @@ export default function PesananScreen() {
   );
 }
 
-function Inp({ ph, v, on, kt, flex }: any) {
+function Inp({ ph, v, on, kt, flex, s, phc }: any) {
   return (
     <TextInput
-      placeholder={ph} value={v} onChangeText={on} keyboardType={kt} placeholderTextColor={theme.color.ink2}
+      placeholder={ph} value={v} onChangeText={on} keyboardType={kt} placeholderTextColor={phc}
       style={[s.inp, flex && { flex: 1 }]}
     />
   );
 }
 
-const s = StyleSheet.create({
+const makeStyles = (theme: Theme) => StyleSheet.create({
   root: { flex: 1, backgroundColor: theme.color.bg },
   title: { color: theme.color.ink, fontSize: 22, fontWeight: '600', marginBottom: 14 },
   form: { backgroundColor: theme.color.raised, borderWidth: 1, borderColor: theme.color.line, borderRadius: theme.radius.xs, padding: 14 },
