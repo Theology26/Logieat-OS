@@ -1,4 +1,4 @@
-# LogiEat OS — 
+# LogiEat OS 
 
 Satu produk (**LogiEat OS**) dipakai untuk dua mata kuliah. Dokumen ini memetakan setiap
 **Learning Outcome (LO)** ke **fitur + file kode** sebagai bahan jawaban, outline **PPT**, dan outline **laporan**.
