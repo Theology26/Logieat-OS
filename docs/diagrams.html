@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>LogiEat OS — Diagrams</title>
+<style>
+  body{margin:0;background:#eef0f2;font-family:Arial,Helvetica,sans-serif}
+  .card{display:inline-block;margin:18px;padding:26px 30px;background:#ffffff;border:1px solid #c8ccd0;border-radius:8px}
+  .cap{color:#1a1a1a;font-weight:700;font-size:20px;margin-bottom:16px}
+  .mermaid{background:#ffffff}
+</style>
+</head>
+<body>
+<div id="wrap">
+  <section class="card" id="d1"><div class="cap">1. Arsitektur Sistem (Front End + Back End)</div>
+<pre class="mermaid">
+flowchart LR
+  subgraph Client["FRONT END - React (web-react)"]
+    UI["Pages: Login, Dashboard,<br/>Pesanan, Dispatch, Armada"]
+    APIC["lib/api.ts<br/>(fetch + JWT)"]
+    WSC["lib/ws.ts<br/>(WebSocket)"]
+  end
+  subgraph Server["BACK END - GoLang (backend-go)"]
+    REST["REST API<br/>net/http mux 1.22"]
+    MW["Middleware:<br/>cors, tenant(JWT)"]
+    HUB["WebSocket Hub<br/>(gorilla/websocket)"]
+    STORE["store<br/>(database/sql)"]
+  end
+  DB[("MySQL - logieat")]
+  AI["AI Service<br/>FastAPI + PyTorch A2C"]
+  UI --> APIC -->|"HTTP JSON + Bearer"| REST
+  WSC -->|"ws://"| HUB
+  REST --> MW --> STORE --> DB
+  HUB --> STORE
+  REST -->|"/dispatch"| AI
+</pre></section>
+
+  <section class="card" id="d2"><div class="cap">2. Use Case Diagram (UML)</div>
+<pre class="mermaid">
+flowchart TB
+  Owner(("Owner / Admin"))
+  Kurir(("Kurir"))
+  subgraph S["LogiEat OS"]
+    UC1(["Login"])
+    UC2(["Lihat Dashboard / Analitik"])
+    UC3(["Kelola Pesanan"])
+    UC4(["Dispatch AI"])
+    UC5(["Pantau Armada Live"])
+    UC6(["Kirim Lokasi GPS"])
+    UC7(["Chat"])
+    UCA(["AI Routing (A2C)"])
+  end
+  Owner --- UC1
+  Owner --- UC2
+  Owner --- UC3
+  Owner --- UC4
+  Owner --- UC5
+  Owner --- UC7
+  Kurir --- UC1
+  Kurir --- UC6
+  Kurir --- UC7
+  UC4 -.->|include| UCA
+</pre></section>
+
+  <section class="card" id="d3"><div class="cap">3. ERD (Entity Relationship Diagram)</div>
+<pre class="mermaid">
+erDiagram
+  COMPANIES ||--o{ USERS : has
+  COMPANIES ||--o{ ORDERS : has
+  COMPANIES ||--o{ ROUTES : has
+  USERS ||--o{ ROUTES : "courier"
+  ROUTES ||--o{ ROUTE_ASSIGNMENTS : contains
+  ORDERS ||--o| ROUTE_ASSIGNMENTS : "assigned in"
+  USERS ||--o{ CURRENT_LOCATIONS : reports
+  COMPANIES ||--o{ MESSAGES : has
+  COMPANIES {
+    string id PK
+    string name
+    string catering_code
+    double depot_lat
+    double depot_lng
+    enum subscription_status
+  }
+  USERS {
+    string id PK
+    string company_id FK
+    enum role
+    enum status
+    string email
+    string password
+    string vehicle_plate
+  }
+  ORDERS {
+    string id PK
+    string company_id FK
+    string code
+    enum food_category
+    int quantity
+    decimal price
+    double latitude
+    double longitude
+    enum status
+  }
+  ROUTES {
+    string id PK
+    string company_id FK
+    string courier_id FK
+    enum status
+    double total_distance_km
+    string model_type
+  }
+  ROUTE_ASSIGNMENTS {
+    string id PK
+    string route_id FK
+    string order_id FK
+    int sequence
+    enum spoilage_risk
+    enum status
+  }
+  CURRENT_LOCATIONS {
+    string courier_id PK
+    string company_id FK
+    double latitude
+    double longitude
+  }
+  MESSAGES {
+    string id PK
+    string company_id FK
+    string sender_id FK
+    text body
+  }
+</pre></section>
+
+  <section class="card" id="d4"><div class="cap">4. Class Diagram - Back End (GoLang)</div>
+<pre class="mermaid">
+classDiagram
+  class Server {
+    +Config cfg
+    +Store store
+    +Client ai
+    +Hub hub
+    +routes()
+    +handleLogin()
+    +handleOrders()
+    +handleOptimize()
+  }
+  class Store {
+    +DB db
+    +GetUserByEmail()
+    +ListOrders()
+    +CreateOrder()
+    +Analytics()
+    +Fleet()
+    +PersistAssignment()
+  }
+  class Hub {
+    +Add()
+    +Broadcast()
+    +Run()
+  }
+  class Client {
+    +string baseURL
+    +Optimize()
+  }
+  class Claims {
+    +string Sub
+    +string CompanyID
+    +string Role
+    +int Exp
+  }
+  Server --> Store
+  Server --> Hub
+  Server --> Client
+  Server ..> Claims : sign/verify JWT
+</pre></section>
+
+  <section class="card" id="d5"><div class="cap">5. Class / Component Diagram - Front End (React)</div>
+<pre class="mermaid">
+classDiagram
+  class App {
+    +Router routes
+  }
+  class AuthProvider {
+    +user
+    +company
+    +login()
+    +logout()
+  }
+  class apiClient {
+    +login()
+    +me()
+    +orders()
+    +analytics()
+    +fleet()
+    +dispatchOptimize()
+  }
+  class Layout
+  class Dashboard
+  class Orders
+  class Dispatch
+  class Fleet
+  App --> AuthProvider
+  App --> Layout
+  Layout --> Dashboard
+  Layout --> Orders
+  Layout --> Dispatch
+  Layout --> Fleet
+  Dashboard --> apiClient
+  Orders --> apiClient
+  Dispatch --> apiClient
+  Fleet --> apiClient
+  AuthProvider --> apiClient
+</pre></section>
+
+  <section class="card" id="d6"><div class="cap">6. Sequence Diagram - Alur Lengkap (UML)</div>
+<pre class="mermaid">
+sequenceDiagram
+  actor O as Owner/Admin
+  actor K as Kurir
+  participant FE as Front End (React)
+  participant GO as Go REST + WS
+  participant LV as Laravel API
+  participant AI as AI Service (A2C)
+  participant DB as MySQL
+
+  Note over O,DB: 1) Autentikasi
+  O->>FE: buka aplikasi, isi email + sandi
+  FE->>GO: POST /api/auth/login
+  GO->>DB: cek user (verifikasi bcrypt)
+  DB-->>GO: data user + company
+  GO-->>FE: JWT token
+  FE-->>O: masuk ke dashboard
+
+  Note over O,DB: 2) Input Pesanan
+  O->>FE: tambah pesanan (penerima, menu, qty, lokasi)
+  FE->>GO: POST /api/orders (Bearer JWT)
+  GO->>DB: INSERT order (status = pending)
+  DB-->>GO: ok (kode #1027)
+  GO-->>FE: pesanan tersimpan
+
+  Note over O,DB: 3) Dispatch AI (optimasi)
+  O->>FE: pilih kurir + centang pesanan, klik Optimasi
+  FE->>GO: POST /api/dispatch/optimize
+  GO->>DB: ambil depot + pesanan pending
+  DB-->>GO: data lokasi + demand
+  GO->>AI: POST /routing/optimize (nodes, suhu)
+  AI->>AI: model A2C urutkan (spoilage-aware)
+  AI-->>GO: rute terurut + risiko basi
+  GO-->>FE: preview rute (jarak, ETA)
+
+  Note over O,DB: 4) Assign + Notifikasi
+  O->>FE: klik Kirim ke Kurir
+  FE->>GO: POST /api/dispatch/assign
+  GO->>DB: simpan routes + assignments (transaksi), order=assigned
+  DB-->>GO: route_id
+  GO-->>K: WebSocket notif "tugas baru"
+  GO-->>FE: berhasil dikirim
+
+  Note over K,DB: 5) Eksekusi Pengantaran
+  K->>LV: GET /courier/tasks
+  LV->>DB: ambil rute aktif + stops
+  DB-->>LV: daftar stop terurut
+  LV-->>K: tampilkan tugas
+  K->>GO: WS kirim GPS {lat,lng} (berkala)
+  GO->>DB: upsert current_location
+  GO-->>O: WS broadcast posisi kurir (Armada Live)
+  K->>LV: POST /courier/.../deliver (foto PoD)
+  LV->>DB: simpan bukti, status = delivered
+  DB-->>LV: ok
+  LV-->>K: konfirmasi tiba
+
+  Note over O,DB: 6) Monitoring & Analitik
+  O->>FE: buka Dashboard / Armada
+  FE->>GO: GET /api/analytics, GET /api/fleet
+  GO->>DB: agregasi penjualan + posisi
+  DB-->>GO: KPI + lokasi terkini
+  GO-->>FE: dashboard ter-update
+  FE-->>O: lihat hasil real-time
+</pre></section>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({ startOnLoad:false, securityLevel:'loose', theme:'default', htmlLabels:false, flowchart:{ htmlLabels:false, useMaxWidth:true } });
+  window.__done = false;
+  mermaid.run().then(()=>{ window.__done = true; });
+</script>
+</body>
+</html>

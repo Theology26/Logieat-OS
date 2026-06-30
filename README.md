@@ -126,6 +126,11 @@ terhubung ke backend & database yang sama.
 
 ## 🏗️ Arsitektur
 
+![Arsitektur Sistem](docs/diagrams/01-arsitektur.png)
+
+Diagram lengkap (use case, class, ERD, sequence) ada di [`docs/diagrams/`](docs/diagrams/)
+dan dijelaskan di [`docs/UAS-NOTES.md`](docs/UAS-NOTES.md).
+
 ```
    📱 Kurir App ───┐                                  ┌─── 🖥️ Admin Web
    📱 Manager App ─┼──► Go Core (REST + WebSocket) ◄──┤    (Laravel + Inertia/React)
@@ -220,8 +225,21 @@ Dibuat oleh `php artisan db:seed` (Catering ID: `DAP-DEMO01`):
 
 ## 🎨 Tampilan
 
+**Aplikasi Mobile (Kurir)**
+
+| Tugas (urutan AI) | Navigasi turn-by-turn | Mode terang |
+|---|---|---|
+| ![Tugas](docs/screenshots/04-kurir-tasks.png) | ![Navigasi](docs/screenshots/05-kurir-navigation.png) | ![Terang](docs/screenshots/07-kurir-profil-light.png) |
+
+**Web (Go + React)**
+
+| Dashboard | Dispatch AI | Armada Live |
+|---|---|---|
+| ![Dashboard](docs/uas-web-screenshots/web-2-dashboard.png) | ![Dispatch](docs/uas-web-screenshots/web-3-dispatch.png) | ![Armada](docs/uas-web-screenshots/web-4-fleet.png) |
+
 - **Tema:** gold / black premium (Inter + Cinzel + JetBrains Mono), konsisten di semua platform
-- Preview semua layar: [`docs/mockups/mockups.html`](docs/mockups/mockups.html)
+- Semua screenshot: [`docs/screenshots/`](docs/screenshots/) · web: [`docs/uas-web-screenshots/`](docs/uas-web-screenshots/)
+- Preview mockup semua layar: [`docs/mockups/mockups.html`](docs/mockups/mockups.html)
 - Landing page: [`landing/index.html`](landing/index.html)
 
 ---

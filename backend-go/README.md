@@ -1,36 +1,69 @@
-# backend-go — LogiEat OS Core Service
+# LogiEat OS — Backend (GoLang REST API + WebSocket)
 
-High-concurrency Go service: realtime (WebSocket + Redis pub/sub), GPS streaming, AI-dispatch
-bridge to `ai-service/app.py`, and courier execution endpoints. See [`../docs/ARCHITECTURE.md`](../docs/ARCHITECTURE.md).
+Back end inti LogiEat OS: **REST API** dan **WebSocket realtime** yang ditulis dengan **GoLang**.
+Melayani autentikasi, pesanan, kurir, analitik, **dispatch AI** (jembatan ke `ai-service`), dan
+**pelacakan armada real-time**. Berbagi satu database MySQL dengan Laravel.
 
-## Run (local)
+## Arsitektur Sistem
+![Arsitektur](../docs/diagrams/01-arsitektur.png)
+
+## Teknologi
+- **Go 1.22** `net/http` (routing method-pattern, tanpa framework)
+- **MySQL** via `database/sql` + `go-sql-driver/mysql`
+- **JWT HS256** (stdlib `crypto/hmac`) + **bcrypt** (`golang.org/x/crypto`)
+- **WebSocket** `gorilla/websocket`
+- **CORS** middleware (agar bisa dipanggil front end React di origin berbeda)
+
+## Struktur Folder
+```
+cmd/server/main.go          # entry point + loader .env
+internal/
+├─ server/   routes.go, api.go, dispatch.go, ws.go, middleware.go, server.go
+├─ store/    store.go, api_store.go   # query MySQL (database/sql)
+├─ auth/     jwt.go                   # sign & verify HS256
+├─ ws/       hub.go                   # WebSocket hub (goroutine)
+├─ ai/       ai.go                    # client ke ai-service (A2C)
+├─ db/       db.go
+└─ config/   config.go               # baca env
+```
+
+## Endpoint REST
+| Method | Path | Fungsi |
+|---|---|---|
+| POST | `/api/auth/login` | verifikasi bcrypt → terbitkan JWT |
+| GET | `/api/me` | profil user + company |
+| GET | `/api/orders` | daftar pesanan (tenant-scoped) |
+| POST | `/api/orders` | tambah pesanan |
+| GET | `/api/couriers` | daftar kurir |
+| GET | `/api/analytics` | KPI + tren penjualan + rekap kurir |
+| GET | `/api/fleet` | depot + posisi kurir |
+| POST | `/api/dispatch/optimize` | optimasi rute (jembatan ke AI A2C) |
+| POST | `/api/dispatch/assign` | simpan rute + notifikasi kurir |
+| GET | `/ws` | realtime GPS + chat (auth via `?token=`) |
+
+## Class Diagram (Back End)
+![Class Diagram Back End](../docs/diagrams/04-class-backend.png)
+
+## ERD (Database)
+![ERD](../docs/diagrams/03-erd.png)
+
+## Sequence — Dispatch AI (client–server)
+![Sequence](../docs/diagrams/06-sequence.png)
+
+## Menjalankan
 ```bash
-cp .env.example .env          # adjust if needed
-go run ./cmd/server           # serves :8080
-curl http://127.0.0.1:8080/healthz
+# pastikan MySQL (Laragon) jalan & DB `logieat` sudah di-migrate+seed dari admin-laravel
+go run ./cmd/server          # port 8080
+```
+Konfigurasi lewat `.env` (lihat `.env.example`). **`JWT_SECRET` wajib sama** dengan
+`admin-laravel/.env`.
+
+```env
+PORT=8080
+DB_DSN=root:@tcp(127.0.0.1:3306)/logieat?parseTime=true&loc=UTC
+AI_SERVICE_URL=http://127.0.0.1:9000
+JWT_SECRET=logieat-dev-shared-secret-change-in-prod
 ```
 
-## Layout
-```
-cmd/server/main.go        entrypoint
-internal/config/          env config (DB_DSN, REDIS_URL, AI_SERVICE_URL, JWT_SECRET…)
-internal/server/          HTTP server, routes, health, middleware
-  ├─ server.go            wiring + http.Server
-  ├─ routes.go            route table (Phase 2/3 endpoints stubbed)
-  ├─ health.go            GET /healthz
-  └─ middleware.go        request logging (+ tenant JWT middleware TODO Phase 1)
-```
-
-## Build
-```bash
-go build ./...        # compile
-go vet ./...          # static checks
-docker build -t logieat-core .
-```
-
-## Next (per ROADMAP)
-- **Phase 1:** `tenant()` middleware (validate shared JWT, inject company_id).
-- **Phase 2:** `POST /dispatch/optimize` → calls app.py; `POST /dispatch/assign` (persist + notify).
-- **Phase 3:** `GET /ws`, `POST /gps`, assignment pickup/arrive/deliver/complete, chat.
-
-> Deps: stdlib only for now. Add MySQL driver (`go-sql-driver/mysql`) + Redis + WS lib in Phase 1–3.
+Konsep yang ditunjukkan: REST routing, middleware (CORS + JWT tenant), akses DB + transaksi,
+concurrency (goroutine hub WebSocket), dan integrasi service AI.

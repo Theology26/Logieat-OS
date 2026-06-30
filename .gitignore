@@ -47,16 +47,17 @@ design.md
 **/AGENTS.md
 mobile-expo/app-example/
 
-# materi tambahan — JANGAN masuk git (hanya sistem inti yang di-track)
-# pipeline + aset video iklan & tutorial
+# materi tambahan — JANGAN masuk git (berat)
+# pipeline aset video iklan & tutorial
 ad/
-# video & audio hasil render
+# video & audio hasil render (berat) — diagram & screenshot TETAP masuk git untuk README
 *.mp4
 *.mov
 *.wav
-# diagram / grafik (svg + png + sumber html) untuk laporan
-docs/diagrams/
-docs/diagrams.html
 # temp/log dari menjalankan service
 .tmp_*
 *.tmp
+# paket pengumpulan UAS
+submission/
+_build/
+*.zip

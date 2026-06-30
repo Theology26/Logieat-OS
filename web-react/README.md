@@ -1,33 +1,47 @@
-# LogiEat OS — Web (Go + React)
+# LogiEat OS — Web (React + Go REST API)
 
-Front end **React (Vite + TypeScript)** untuk **UAS Popular Programming Technology**, mengonsumsi
-**REST API GoLang** di `../backend-go` (client-server, berbagi DB MySQL dengan Laravel).
+Front end **web** LogiEat OS: **React (Vite + TypeScript)** yang sepenuhnya mengonsumsi
+**REST API GoLang** (`../backend-go`) + **WebSocket** — arsitektur **client–server** murni.
 
-## Jawaban UAS & diagram
-Pemetaan tiap Learning Outcome → fitur/kode, diagram (use case, class, ERD, sequence),
-serta outline PPT & laporan ada di **[`../docs/UAS-NOTES.md`](../docs/UAS-NOTES.md)** (Bagian B).
+## Tampilan
+| Dashboard | Dispatch AI | Armada Live |
+|---|---|---|
+| ![Dashboard](../docs/uas-web-screenshots/web-2-dashboard.png) | ![Dispatch](../docs/uas-web-screenshots/web-3-dispatch.png) | ![Armada](../docs/uas-web-screenshots/web-4-fleet.png) |
 
-## Menjalankan
-```bash
-# 1) Go REST API (port 8080) — di folder backend-go
-cd ../backend-go && go run ./cmd/server
-# (untuk Dispatch AI, jalankan juga ai-service: python app.py)
+## Class / Component Diagram (Front End)
+![Class Front End](../docs/diagrams/05-class-frontend.png)
 
-# 2) React (port 5173)
-npm install
-npm run dev
-```
-Base URL API bisa diubah lewat `VITE_API_URL` (default `http://localhost:8080`).
-
-Login demo: `owner@bahagia.id` / `password` (owner) atau `budi@bahagia.id` / `password` (kurir).
+## Teknologi
+- **React 18 + Vite + TypeScript**
+- **React Router** (client-side routing + protected route)
+- **MapLibre GL** (peta armada)
+- **Fetch API** + **JWT** Bearer, **WebSocket** untuk realtime
 
 ## Struktur
 ```
 src/
-├─ lib/      api.ts (REST client), auth.tsx (context+JWT), ws.ts (WebSocket)
-├─ pages/    Login, Dashboard, Orders, Dispatch, Fleet
+├─ lib/        api.ts (REST client), auth.tsx (Context + JWT), ws.ts (WebSocket)
+├─ pages/      Login, Dashboard, Orders, Dispatch, Fleet
 ├─ components/ Layout (sidebar + protected outlet)
-└─ App.tsx   client-side routing (react-router)
+└─ App.tsx     routing
 ```
 
-Bukti jalan (screenshot): [`../docs/uas-web-screenshots/`](../docs/uas-web-screenshots/).
+## Menjalankan
+```bash
+# 1) backend Go (port 8080) + ai-service (port 9000) harus jalan dulu
+cd ../backend-go && go run ./cmd/server
+
+# 2) front end React (port 5173)
+npm install
+npm run dev
+```
+Base URL API diatur lewat `VITE_API_URL` (default `http://localhost:8080`).
+
+Login demo: `owner@bahagia.id` / `password` (owner) · `budi@bahagia.id` / `password` (kurir).
+
+## Halaman
+- **Login** — autentikasi ke `/api/auth/login`, simpan JWT.
+- **Dashboard** — KPI + tren penjualan + rekap kurir (`/api/analytics`).
+- **Pesanan** — tabel + tambah pesanan (`/api/orders`).
+- **Dispatch AI** — pilih kurir + pesanan → `/api/dispatch/optimize` (model A2C) → assign.
+- **Armada Live** — peta MapLibre + posisi kurir real-time via WebSocket.
