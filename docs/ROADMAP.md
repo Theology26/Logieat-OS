@@ -89,7 +89,7 @@ Phase 0 ─► Phase 1 ─► Phase 2 ─► Phase 3 ─► Phase 4
 > the live flow. AI dispatch (Phase 2) can be tested via REST before realtime (Phase 3) exists.
 
 ## Status Snapshot (2026-06-26)
-- ✅ `ai-service/app.py` (A2C routing, vision, decision) — built & trained.
+- ✅ `ai-service/app.py` (A2C routing spoilage-aware) — built & trained.
 - ✅ `design.md` (design system) + `docs/mockups/mockups.html` (13 screens).
 - ✅ `landing/index.html` (premium promo + APK CTA).
 - ✅ Docs: PRD / ARCHITECTURE / DATABASE / ROADMAP.

@@ -55,12 +55,10 @@ AI berada di microservice **`ai-service/app.py` (FastAPI + PyTorch)**, dipanggil
 | Kemampuan AI | Library/Model | Endpoint | Dipakai untuk |
 |---|---|---|---|
 | **Routing spoilage-aware** | **PyTorch A2C** (Actor-Critic RL) + heuristik Q10 | `POST /routing/optimize` | Urutkan antar: makanan cepat basi didahulukan (suhu menaikkan urgensi) |
-| **Vision OCR struk** | **NVIDIA NIM — Llama 3.2 Vision** | `POST /vision/analyze/` | Ekstrak bahan + estimasi basi dari foto struk/inventory |
-| **Saran menu & klasifikasi** | **NVIDIA NIM — Nemotron / Llama 3.x** | `POST /decision/suggest-menu`, `/decision/calculate-epsilon` | Rekomendasi menu bergizi & kategori basi |
 
 Alur AI dari Laravel: admin pilih kurir+pesanan → **Go core** (`/dispatch/optimize`) → **app.py A2C** → hasil rute dikembalikan & disimpan. (Lihat sequence diagram di Bagian B.)
 
-Argumen LO3: dipilih **RL (A2C) untuk optimisasi rute** (bukan sekadar API LLM) karena masalahnya adalah *sequential decision/optimization*, plus **Vision/LLM (NVIDIA NIM)** untuk input tak terstruktur (foto struk) — keduanya paling sesuai kebutuhan logistik makanan.
+Argumen LO3: dipilih **RL (A2C) untuk optimisasi rute** (bukan sekadar API LLM) karena masalahnya adalah *sequential decision/optimization* — pendekatan paling sesuai untuk logistik makanan yang sadar-kebasian.
 
 ---
 

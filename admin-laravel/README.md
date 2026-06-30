@@ -19,8 +19,8 @@ Menunjukkan: routing (`routes/web.php`, `routes/api.php`), MVC (Controller → M
 middleware (JWT + multi-tenant global scope), Eloquent + migrasi, dan SPA via Inertia.
 
 ## Integrasi AI (LO3)
-Dispatch memanggil `backend-go` → `ai-service` (model **A2C** untuk routing spoilage-aware,
-plus NVIDIA NIM untuk vision/menu). Detail: [`../docs/UAS-NOTES.md`](../docs/UAS-NOTES.md) Bagian A.
+Dispatch memanggil `backend-go` → `ai-service` (model **A2C** untuk routing spoilage-aware).
+Detail: [`../docs/UAS-NOTES.md`](../docs/UAS-NOTES.md) Bagian A.
 
 ## ERD
 ![ERD](../docs/diagrams/03-erd.png)

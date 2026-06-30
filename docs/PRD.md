@@ -46,7 +46,6 @@ makanan basi karena urutan asal, owner tak tahu posisi/status kurir, rekap penju
 - iOS build / rilis Play Store (APK langsung — tugas final).
 - Live traffic congestion real-time (OSRM = rute & ETA berbasis jalan, **bukan** macet live).
 - Multi-vehicle auto-clustering (AI hanya urutkan 1 rute/kurir; pembagian antar-kurir = manual).
-- Vision OCR & menu-suggest (`/vision`, `/decision/*`) = **opsional/bonus**, bukan jalur kritis.
 
 ## 6. Functional Requirements
 
