@@ -1,4 +1,4 @@
-# LogiEat OS — Catatan UAS
+# LogiEat OS — 
 
 Satu produk (**LogiEat OS**) dipakai untuk dua mata kuliah. Dokumen ini memetakan setiap
 **Learning Outcome (LO)** ke **fitur + file kode** sebagai bahan jawaban, outline **PPT**, dan outline **laporan**.
@@ -61,23 +61,6 @@ AI berada di microservice **`ai-service/app.py` (FastAPI + PyTorch)**, dipanggil
 Alur AI dari Laravel: admin pilih kurir+pesanan → **Go core** (`/dispatch/optimize`) → **app.py A2C** → hasil rute dikembalikan & disimpan. (Lihat sequence diagram di Bagian B.)
 
 Argumen LO3: dipilih **RL (A2C) untuk optimisasi rute** (bukan sekadar API LLM) karena masalahnya adalah *sequential decision/optimization*, plus **Vision/LLM (NVIDIA NIM)** untuk input tak terstruktur (foto struk) — keduanya paling sesuai kebutuhan logistik makanan.
-
-## Outline PPT (WP)
-1. Judul + masalah katering
-2. Fitur utama (LO1) + alasan
-3. Arsitektur Laravel (MVC + Inertia + multi-tenant)
-4. Demo: login → pesanan → dispatch AI → armada → analitik
-5. Integrasi AI (A2C + NVIDIA NIM) (LO3)
-6. Kesimpulan
-
-## Outline Laporan (WP)
-1. Pendahuluan (latar belakang, rumusan, tujuan)
-2. Analisis kebutuhan & fitur (LO1)
-3. Perancangan (arsitektur, ERD, alur)
-4. Implementasi Laravel (routing, MVC, ORM, middleware, Inertia) (LO2)
-5. Integrasi AI (LO3)
-6. Pengujian (skenario demo)
-7. Kesimpulan & saran
 
 ---
 
